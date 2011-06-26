@@ -1,4 +1,4 @@
 tarxf http://libarchive.googlecode.com/files/ libarchive-2.8.4 .tar.gz
-./configure --prefix=/ --disable-shared
+./configure --prefix=/
 make
 make DESTDIR=$R install
