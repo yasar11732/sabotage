@@ -2,4 +2,4 @@ cd $S/musl
 cp $K/musl.config.mak.stage1 config.mak
 
 make CC=$R/bin/gcc
-make install
+make install DESTDIR=$R
