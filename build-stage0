@@ -15,5 +15,6 @@ export A=$($H/utils/platform)
 . $H/stage0/binutils
 . $H/stage0/make
 . $H/stage0/mk
+. $H/stage0/musl-ldso
 
 . $H/stage0/finish
