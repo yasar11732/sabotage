@@ -16,7 +16,9 @@ ln bin/init init
 cp /bin/fsck* /bin/mkfs.* bin || true
 cp /bin/extlinux bin
 cp /bin/ed bin
+cp /lib/libc.so lib/
 strip -s bin/* || true
+strip --strip-unneeded lib/*.so
 # cp -r /lib/modules lib
 cp /lib/syslinux/* lib/syslinux
 mknod -m 0644 dev/console c 5 1
