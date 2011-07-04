@@ -2022,6 +2022,9 @@
 /share/man/man3/X509_new.3
 /share/man/man3/X509_verify_cert.3
 /share/man/man3/X509_verify_cert_error_string.3
+/share/man/man3/XS::APItest.3perl
+/share/man/man3/XS::APItest::KeywordRPN.3perl
+/share/man/man3/XS::Typemap.3perl
 /share/man/man3/XSLoader.3perl
 /share/man/man3/_nc_free_and_exit.3x
 /share/man/man3/_nc_freeall.3x
@@ -3093,6 +3096,7 @@
 /share/man/man3/wvline.3x
 /share/man/man3/wvline_set.3x
 /share/man/man3/x509.3
+/share/man/man3/zlib.3
 /share/man/man4
 /share/man/man4/magic.4
 /share/man/man5

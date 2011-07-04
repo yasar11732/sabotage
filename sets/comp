@@ -823,6 +823,7 @@
 /include/mpc.h
 /include/mpf2mpfr.h
 /include/mpfr.h
+/include/mqueue.h
 /include/mtd
 /include/mtd/..install.cmd
 /include/mtd/.install
@@ -849,6 +850,8 @@
 /include/netinet/ip_icmp.h
 /include/netinet/tcp.h
 /include/netinet/udp.h
+/include/netpacket
+/include/netpacket/packet.h
 /include/nl_types.h
 /include/openssl
 /include/openssl/aes.h
@@ -1058,11 +1061,13 @@
 /include/sound/hdspm.h
 /include/sound/sb16_csp.h
 /include/sound/sfnt_info.h
+/include/spawn.h
 /include/stdarg.h
 /include/stdbool.h
 /include/stddef.h
 /include/stdint.h
 /include/stdio.h
+/include/stdio_ext.h
 /include/stdlib.h
 /include/string.h
 /include/strings.h
@@ -1070,6 +1075,7 @@
 /include/symcat.h
 /include/sys
 /include/sys/epoll.h
+/include/sys/eventfd.h
 /include/sys/file.h
 /include/sys/inotify.h
 /include/sys/ioctl.h
@@ -1151,6 +1157,9 @@
 /lib/gcc
 /lib/libarchive.a
 /lib/libarchive.la
+/lib/libarchive.so
+/lib/libarchive.so.2
+/lib/libarchive.so.2.8.4
 /lib/libbfd.a
 /lib/libbfd.la
 /lib/libc.a
@@ -1167,6 +1176,9 @@
 /lib/libform_g.a
 /lib/libgmp.a
 /lib/libgmp.la
+/lib/libgmp.so
+/lib/libgmp.so.10
+/lib/libgmp.so.10.0.1
 /lib/libiberty.a
 /lib/liblzma.a
 /lib/liblzma.la
@@ -1179,6 +1191,9 @@
 /lib/libmpc.la
 /lib/libmpfr.a
 /lib/libmpfr.la
+/lib/libmpfr.so
+/lib/libmpfr.so.4
+/lib/libmpfr.so.4.0.1
 /lib/libncurses.a
 /lib/libncurses_g.a
 /lib/libopcodes.a
@@ -1203,6 +1218,7 @@
 /lib/pkgconfig/openssl.pc
 /lib/pkgconfig/python-2.7.pc
 /lib/pkgconfig/python.pc
+/lib/pkgconfig/zlib.pc
 /share/aclocal
 /share/aclocal-1.11
 /share/aclocal-1.11/amversion.m4
