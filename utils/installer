@@ -19,6 +19,7 @@ cp /bin/ed bin
 cp /lib/libc.so lib/
 strip -s bin/* || true
 strip --strip-unneeded lib/*.so
+ln -s libc.so lib/ld-musl-$A.so.1
 # cp -r /lib/modules lib
 cp /lib/syslinux/* lib/syslinux
 mknod -m 0644 dev/console c 5 1
