@@ -2,7 +2,6 @@
 
 set -e -x
 export H=$(pwd)
-export A=$($H/utils/platform)
 
 . $H/config
 . $H/utils/utils
