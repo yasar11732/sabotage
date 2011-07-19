@@ -13,6 +13,7 @@ automake:    autoconf
 less:        ncurses
 lynx:        ncurses
 vim:         ncurses
+nano:        ncurses
 
 # xorg (should assume pkg is built)
 bigreqsproto:    util-macros
