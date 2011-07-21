@@ -28,6 +28,7 @@ less:        ncurses
 lynx:        ncurses
 vim:         ncurses
 nano:        ncurses
+gdb:         ncurses patch
 
 # xorg (should assume pkg is built)
 bigreqsproto:    util-macros
