@@ -6,10 +6,10 @@
 ARCH = $A
 
 # Installation prefix. DO NOT use /, /usr, or /usr/local !
-prefix = $R
+prefix = /
 
 # Installation prefix for musl-gcc compiler wrapper.
-exec_prefix = $R
+exec_prefix = /
 
 # Uncomment if you want to build i386 musl on a 64-bit host
 #CFLAGS += -m32
@@ -20,5 +20,5 @@ exec_prefix = $R
 # Uncomment for warnings (as errors). Might need tuning to your gcc version.
 #CFLAGS += -Werror -Wall -Wpointer-arith -Wcast-align -Wno-parentheses -Wno-char-subscripts -Wno-uninitialized -Wno-sequence-point -Wno-missing-braces -Wno-unused-value
 
-# Uncomment if you want to disable building the shared library.
+# Uncomment if you want to build a shared library (experimental).
 SHARED_LIBS =
