@@ -1,5 +1,5 @@
 export K=$(pwd)/KEEP
-export S=/tmp/sabotage/root/src
+export S=/tmp/sabotage/src
 export R=/tmp/sabotage/root
 #set your arch
 export A=i386
