@@ -1,0 +1,34 @@
+if [[ ! $CROSS_PATH ]] ; then
+	echo "need to set CROSS_PATH before install!"
+	echo "run musl-cross, than binutils-cross, than gcc3-cross setup"
+	exit 1
+fi
+
+SELF=$(pwd)
+
+mkdir -p $CROSS_PATH
+
+if [[ ! -e $CROSS_PATH/usr ]] ; then
+        cd $CROSS_PATH
+        ln -sf . usr
+        cd $SELF
+fi
+
+if [[ ! -e $CROSS_PATH/i686-pc-linux-gnulibc1 ]] ; then
+	cd $CROSS_PATH
+	ln -sf . i686-pc-linux-gnulibc1
+	cd $SELF
+fi
+
+tarxf http://ftp.gnu.org/gnu/gcc/gcc-3.4.6/ gcc-core-3.4.6 .tar.bz2 gcc-3.4.6
+
+sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
+sed -i 's/redir_handle = open (redir, O_WRONLY | O_TRUNC | O_CREAT);/redir_handle = open (redir, O_WRONLY | O_TRUNC | O_CREAT, 0644);/' gcc/collect2.c
+
+mkdir build
+cd build
+
+CFLAGS=-D_GNU_SOURCE ../configure --prefix=$CROSS_PATH --disable-bootstrap --disable-shared --disable-multilib --disable-nls --with-build-sysroot=/ --with-sysroot=$CROSS_PATH --enable-obsolete
+# --target=i686-linux
+make LDFLAGS="-static"
+make install

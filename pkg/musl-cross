@@ -1,0 +1,14 @@
+export X=$CROSS_PATH
+
+cd $S
+rm -rf musl
+#git clone git://git.etalabs.net/musl
+tarxf http://dummy/ musl-cross .tar.bz2
+#cd musl-cross
+cp $K/musl-cross.config.mak config.mak
+
+make
+make install
+
+echo "now run binutils-cross setup, than gcc3"
+

@@ -1,0 +1,32 @@
+#!/bin/sh
+
+if [[ ! $CROSS_PATH ]] ; then
+        echo "need to set CROSS_PATH before install!"
+        exit 1
+fi
+
+mkdir -p $CROSS_PATH
+
+if [[ ! -e $CROSS_PATH/usr ]] ; then
+        cd $CROSS_PATH
+        ln -sf . usr
+        cd $SELF
+fi
+
+#this is were gcc will place/expect its stuff
+if [[ ! -e $CROSS_PATH/i686-pc-linux-gnulibc1 ]] ; then
+        cd $CROSS_PATH
+        ln -sf . i686-pc-linux-gnulibc1
+        cd $SELF
+fi
+
+#this is what binutils will create- what we dont want.
+if [[ ! -e $CROSS_PATH/i686-pc-linux-gnu ]] ; then
+        cd $CROSS_PATH
+        ln -sf . i686-pc-linux-gnu
+        cd $SELF
+fi
+
+mk rebuild-musl-cross || exit 1
+mk rebuild-binutils-cross || exit 1
+mk rebuild-gcc3-cross || exit 1

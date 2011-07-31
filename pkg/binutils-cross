@@ -1,0 +1,10 @@
+if [[ ! $CROSS_PATH ]] ; then
+        echo "need to set CROSS_PATH before install!"
+        exit 1
+fi
+
+tarxf http://ftp.gnu.org/gnu/binutils/ binutils-2.21 .tar.bz2
+./configure --prefix=$CROSS_PATH --disable-shared --disable-nls --with-build-sysroot=/ --with-sysroot=$CROSS_PATH
+echo "#define __pid_t int" >include/features.h
+make 
+make install
