@@ -1,17 +1,6 @@
 diff -aur busybox-1.18.4.orig/include/platform.h busybox-1.18.4/include/platform.h
 --- busybox-1.18.4.orig/include/platform.h	2011-03-13 02:45:40.000000000 +0100
 +++ busybox-1.18.4/include/platform.h	2011-04-05 23:35:30.008509894 +0200
-@@ -350,9 +350,7 @@
- 
- #endif
- 
--#if defined(__GLIBC__)
--# define fdprintf dprintf
--#endif
-+#define fdprintf dprintf
- 
- #if defined(__dietlibc__)
- # undef HAVE_STRCHRNUL
 @@ -374,6 +372,13 @@
  # undef HAVE_STRCHRNUL
  #endif
@@ -60,17 +49,6 @@ diff -aur busybox-1.18.4.orig/networking/libiproute/iplink.c busybox-1.18.4/netw
  #include <netpacket/packet.h>
  #include <net/ethernet.h>
  
-diff -aur busybox-1.18.4.orig/networking/libiproute/ll_types.c busybox-1.18.4/networking/libiproute/ll_types.c
---- busybox-1.18.4.orig/networking/libiproute/ll_types.c	2011-03-13 02:45:06.000000000 +0100
-+++ busybox-1.18.4/networking/libiproute/ll_types.c	2011-04-05 23:35:13.395240397 +0200
-@@ -7,6 +7,7 @@
-  *
-  * Authors: Alexey Kuznetsov, <kuznet@ms2.inr.ac.ru>
-  */
-+#include <sys/socket.h>
- #include <arpa/inet.h>
- #include <linux/if_arp.h>
- 
 diff -aur busybox-1.18.4.orig/util-linux/fdisk.c busybox-1.18.4/util-linux/fdisk.c
 --- busybox-1.18.4.orig/util-linux/fdisk.c	2011-03-13 02:45:40.000000000 +0100
 +++ busybox-1.18.4/util-linux/fdisk.c	2011-04-05 23:35:13.398573718 +0200
@@ -93,29 +71,15 @@ diff -aur busybox-1.18.4.orig/util-linux/fdisk.c busybox-1.18.4/util-linux/fdisk
  #include <sys/time.h>
  #include <sys/types.h>
  #include <sys/wait.h>
-@@ -100,25 +101,6 @@
- #if !defined __FreeBSD__
- char *dirname(char *path);
+diff -aur busybox-1.19.2.orig/networking/tcpudp.c busybox-1.19.2/networking/tcpudp.c
+--- busybox-1.19.2.orig/networking/tcpudp.c
++++ busybox-1.19.2/networking/tcpudp.c
+@@ -71,7 +71,7 @@
+ /* Wants <limits.h> etc, thus included after libbb.h: */
+ #ifdef __linux__
+ #include <linux/types.h> /* for __be32 etc */
+-#include <linux/netfilter_ipv4.h>
++//#include <linux/netfilter_ipv4.h>
  #endif
--/* Include our own copy of struct sysinfo to avoid binary compatibility
-- * problems with Linux 2.4, which changed things.  Grumble, grumble. */
--struct sysinfo {
--	long uptime;			/* Seconds since boot */
--	unsigned long loads[3];		/* 1, 5, and 15 minute load averages */
--	unsigned long totalram;		/* Total usable main memory size */
--	unsigned long freeram;		/* Available memory size */
--	unsigned long sharedram;	/* Amount of shared memory */
--	unsigned long bufferram;	/* Memory used by buffers */
--	unsigned long totalswap;	/* Total swap space size */
--	unsigned long freeswap;		/* swap space still available */
--	unsigned short procs;		/* Number of current processes */
--	unsigned short pad;			/* Padding needed for m68k */
--	unsigned long totalhigh;	/* Total high memory size */
--	unsigned long freehigh;		/* Available high memory size */
--	unsigned int mem_unit;		/* Memory unit size in bytes */
--	char _f[20 - 2 * sizeof(long) - sizeof(int)]; /* Padding: libc5 uses this.. */
--};
--int sysinfo(struct sysinfo* info);
- #ifndef PATH_MAX
- # define PATH_MAX 256
- #endif
+ 
+ // TODO: move into this file:
