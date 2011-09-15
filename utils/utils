@@ -1,17 +1,21 @@
 #!/bin/sh
 
 download() {
-  if ! wget -c $1 ; then
-    echo "trouble downloading $1, fix your connection. will sleep for 10 sec and loop until it works."
-    sleep 10
-    download $1 $2
-  fi
-  # check if archive was completety downloaded
-  # busybox' wget seem to be rather buggy
-  if ! tar tf $2 >/dev/null ; then
-    echo "partial download detected, retrying..."
-    download $1 $2
-  fi
+	while true ; do
+		if ! wget -c $1 ; then
+			echo "trouble downloading $1, fix your connection. will sleep for 10 sec and loop until it works."
+			sleep 10
+		else
+			# check if archive was completety downloaded
+			# busybox' wget seem to be rather buggy
+			if ! tar tf $2 >/dev/null ; then
+				echo "partial download detected, retrying..."
+			else
+				break;
+			fi
+
+		fi
+	done
 }
 
 # tarxf http://server/path/to/ file-1 .tar.gz [dirname]
