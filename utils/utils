@@ -1,18 +1,23 @@
 #!/bin/sh
 
 download() {
-  wget -c $1
-  if [[ ! $? ]] ; then
+  if ! wget -c $1 ; then
     echo "trouble downloading $1, fix your connection. will sleep for 10 sec and loop until it works."
     sleep 10
-    download $1
+    download $1 $2
+  fi
+  # check if archive was completety downloaded
+  # busybox' wget seem to be rather buggy
+  if ! tar tf $2 >/dev/null ; then
+    echo "partial download detected, retrying..."
+    download $1 $2
   fi
 }
 
 # tarxf http://server/path/to/ file-1 .tar.gz [dirname]
 tarxf() {
   cd $S
-  [ -f $2$3 ] || download $1$2$3
+  [ -f $2$3 ] || download $1$2$3 $2$3
   rm -rf ${4:-$2}
   tar xf $2$3
   cd ${4:-$2}
