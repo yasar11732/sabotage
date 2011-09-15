@@ -13,3 +13,10 @@ mount --rbind /proc $R/proc
 
 echo "Entering chroot..."
 SHELL=/bin/sh chroot $R /bin/sh
+
+umount $R/dev/pts
+umount $R/dev/shm
+umount $R/dev
+umount $R/proc
+
+
