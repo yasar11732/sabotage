@@ -1,4 +1,6 @@
 #!/bin/sh
+# run this script on a second install, i.e. after you have run backup-tarballs.sh
+# it will put the tarballs into the build destination.
 
 if [[ ! $1 ]] ; then
 	echo "enter the pathname containing your backup tarballs as arg1"
@@ -16,10 +18,9 @@ echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 mkdir -p $S
 mkdir -p $R
-mkdir -p $R/tmp
-mkdir -p $R/tmp/src
+mkdir -p $R/src
 
-cp $1/src/*.bz2 $1/src/*.gz $S/
-cp $1/root/tmp/src/*.bz2 $1/root/tmp/src/*.gz $R/tmp/src/
+cp $1/src/*.bz2 $1/src/*.gz $1/src/*.xz $S/
+cp $1/root/src/*.bz2 $1/root/src/*.gz $1/root/src/*.xz $R/src/
 
 echo "done."
