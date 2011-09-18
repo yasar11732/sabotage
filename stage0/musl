@@ -1,7 +1,4 @@
-cd $S
-rm -rf musl
-git clone git://git.etalabs.net/musl
-cd musl
+tarxf http://www.etalabs.net/musl/releases/ musl-0.8.2 .tar.gz
 cp $K/musl.config.mak config.mak
 
 make CC=$R/bin/gcc
