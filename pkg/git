@@ -5,6 +5,7 @@ curl
 
 [mirrors]
 http://www.kernel.org/pub/software/scm/git/git-1.7.6.tar.bz2
+http://ftp.hosteurope.de/mirror/ftp.kernel.org/pub/software/scm/git/git-1.7.6.tar.bz2
 
 [build]
 
