@@ -2,6 +2,7 @@ export K=$(pwd)/KEEP
 export C=$(pwd)/tarballs
 export S=/tmp/sabotage/src
 export R=/tmp/sabotage/root
+export LOGPATH=$S/logs
 #set your arch
 export A=i386
 #export A=x86_64
