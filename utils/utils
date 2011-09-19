@@ -2,7 +2,7 @@
 
 download() {
 	while true ; do
-		if ! wget -c $1 ; then
+		if ! wget -c $1 --no-check-certificate; then
 			echo "trouble downloading $1, fix your connection. will sleep for 10 sec and loop until it works."
 			sleep 10
 		else

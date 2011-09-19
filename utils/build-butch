@@ -2,3 +2,4 @@ tarxf https://github.com/downloads/rofl0r/butch/ butch-0.0.1 .tar.bz2 butch
 
 ./build.sh
 cp butch/butch.out $S/
+mv $S/butch-0.0.1.tar.bz2 $C/
