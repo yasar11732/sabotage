@@ -2,6 +2,7 @@
 stage0_prepare
 stage0_gcc3
 stage0_musl
+stage0_butch
 stage0_busybox
 stage0_binutils
 stage0_make

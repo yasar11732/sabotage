@@ -1,0 +1,12 @@
+[main]
+tardir=butch
+
+[deps]
+stage0_musl
+
+[mirrors]
+https://github.com/downloads/rofl0r/butch/butch-0.0.1.tar.bz2
+
+[build]
+CC="$R/bin/musl-gcc -static" ./build.sh
+cp butch/butch.out $R/bin/butch
