@@ -15,6 +15,7 @@ mount --bind $C $S/src/tarballs
 echo "Entering chroot..."
 SHELL=/bin/sh chroot $R /bin/sh
 
+umount $R/src/tarballs
 umount $R/dev/pts
 umount $R/dev/shm
 umount $R/dev
