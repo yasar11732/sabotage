@@ -13,7 +13,7 @@ This system has been built on up-to-date Gentoo, Exherbo and Arch systems.
 
 You can bootstrap your own build from the scripts at 
 
-               https://github.com/chneukirchen/sabotage
+               https://github.com/rofl0r/sabotage
 
 or use a ready-to-boot disk image either for netinstall or with sets
 included (put it on an USB stick, burning a CD will not work), to be
@@ -39,18 +39,17 @@ DO NOT RUN SCRIPTS YOU HAVE NOT READ.
 
 % ./build-stage0   # build toolchain (~15min on a modern machine)
 % ./enter-chroot   # enter $R chrooted, needs root password
-# cd /src/sabotage   # absolute path required!
-# mk stage1        # rebuild stuff, build kernel (~1h)
+% cd /src
+% . config
+% butch install stage1
+
 copy $R to a ext4 file-system
 # extlinux -i $R/boot
 
-# mk pkg           # additional stuff
-# mk xorg          # build X.org
+# butch install pkg           # additional stuff
+# butch install  xorg          # build X.org
 
-See "mk help" for further options.
-
-The build is parallel-safe (MAKEFLAGS=-j<N>), but all packages are build
-sequentially.
+See "butch" for further options.
 
 The default root password is "sabotage".
 
