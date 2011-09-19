@@ -6,6 +6,13 @@
 stage0_make
 
 [build]
+mkdir -p $R/src/tarballs
+mkdir -p $R/src/pkg
+mkdir -p $R/src/KEEP
+mkdir -p $R/src/logs
+cp -r $H/KEEP $R/src/KEEP
+cp -r $H/pkg $R/src/pkg
+
 cp $K/extlinux.conf $R/boot/
 cp $K/runsvdir-start $R/bin/
 cp -r $K/etc/* $R/etc/
@@ -14,10 +21,11 @@ for s in $R/etc/service/*; do
   ln -s /etc/service/${s##*/} ${s/etc/var}
 done
 
-cp -r $H $R/src/sabotage
+#cp -r $H $R/src/sabotage
 
-cp -r $S/*.tar.* $S/musl $R/src
-cp $K/config.stage1 $R/src/sabotage/config
+#cp -r $S/*.tar.* $S/musl $R/src
+cp $K/config.stage1 $R/src/config
+echo export A=$A >> $R/src/config
 
 cp /etc/resolv.conf $R/etc
 ln -s /proc/mounts $R/etc/mtab
