@@ -10,5 +10,5 @@ export H=$(pwd)
 mkdir -p $S/logs
 cp -r $H/pkg $S/
 cp -r $H/KEEP $S/
-$S/butch install stage0
+$S/butch.out install stage0
 
