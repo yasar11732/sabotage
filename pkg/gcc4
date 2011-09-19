@@ -1,0 +1,31 @@
+[deps]
+m4
+gawk
+sed
+gmp
+mpfr
+mpc
+
+[main]
+tardir=gcc-4.5.3
+
+[mirrors]
+ftp://gcc.gnu.org/pub/gcc/releases/gcc-4.5.3/gcc-core-4.5.3.tar.bz2
+
+[build]
+
+sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
+
+sed -i 's@/lib/ld-linux.so.2@/lib/ld-musl-i386.so.1@' gcc/config/i386/linux.h
+sed -i 's@/lib/ld-linux.so.2@/lib/ld-musl-i386.so.1@' gcc/config/i386/linux64.h
+sed -i 's@/lib64/ld-linux-x86-64.so.2@/lib/ld-musl-x86_64.so.1@' gcc/config/i386/linux64.h
+
+export CC="gcc -static -D_GNU_SOURCE" 
+./configure --with-newlib --with-headers=no --prefix=/ \
+  --disable-multilib --disable-nls --disable-shared --disable-mudflap \
+  --disable-libmudflap --disable-libssp --disable-libgomp \
+  --libdir=/lib --libexecdir=/lib --mandir=/share/man --infodir=/share/info
+make BOOT_LDFLAGS="-static" LDFLAGS="-static" bootstrap
+make -j1 DESTDIR=$R install
+ln -sf gcc $R/bin/cc
+[ "$A" = x86_64 ] && mv $R/lib64/libgcc* $R/lib || true

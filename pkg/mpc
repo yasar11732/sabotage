@@ -1,0 +1,12 @@
+[deps]
+mpfr
+
+[main]
+
+[mirrors]
+http://www.multiprecision.org/mpc/download/mpc-0.9.tar.gz
+
+[build]
+./configure --prefix=/ --disable-shared
+make
+make DESTDIR=$R install

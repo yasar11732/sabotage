@@ -1,0 +1,20 @@
+[deps]
+perl
+
+[main]
+
+[mirrors]
+http://www.kernel.org/pub/linux/utils/boot/syslinux/4.xx/syslinux-4.04.tar.bz2
+
+[build]
+
+sed -i '/#define statfs/d;/#undef statfs/d' libinstaller/linuxioctl.h
+
+make -C libinstaller
+make -C extlinux OPTFLAGS="-g -Os -D_GNU_SOURCE" LDFLAGS="-static"
+make -C linux OPTFLAGS="-g -Os -D_GNU_SOURCE" LDFLAGS="-static"
+
+cp extlinux/extlinux $R/bin
+cp linux/syslinux $R/bin
+mkdir -p $R/lib/syslinux
+cp mbr/*mbr.bin $R/lib/syslinux

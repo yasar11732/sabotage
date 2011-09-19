@@ -1,0 +1,12 @@
+[deps]
+m4
+
+[main]
+
+[mirrors]
+ftp://ftp.gmplib.org/pub/gmp-5.0.2/gmp-5.0.2.tar.bz2
+
+[build]
+./configure --prefix=/ --disable-shared
+make
+make DESTDIR=$R install

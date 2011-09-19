@@ -1,0 +1,16 @@
+[deps]
+gcc4
+
+[main]
+
+[mirrors]
+http://zlib.net/zlib-1.2.5.tar.gz
+
+[build]
+./configure --prefix=/ --static
+
+make
+# make install is broken
+ranlib libz.a
+install -m644 libz.a $R/lib
+install -m644 zlib.h zconf.h $R/include

@@ -1,0 +1,9 @@
+[main]
+
+[mirrors]
+http://tukaani.org/xz/xz-5.0.3.tar.bz2
+
+[build]
+./configure --prefix=/ --disable-nls --disable-shared
+make
+make DESTDIR=$R install

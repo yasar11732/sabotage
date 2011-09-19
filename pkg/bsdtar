@@ -1,0 +1,12 @@
+[deps]
+xz
+
+[main]
+
+[mirrors]
+http://libarchive.googlecode.com/files/libarchive-2.8.4.tar.gz
+
+[build]
+./configure --prefix=/ --disable-shared
+make
+make DESTDIR=$R install

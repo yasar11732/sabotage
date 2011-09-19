@@ -1,0 +1,9 @@
+[main]
+
+[mirrors]
+http://ftp.gnu.org/pub/gnu/sed/sed-4.2.1.tar.bz2
+
+[build]
+./configure --prefix=/ --disable-nls
+make
+make DESTDIR=$R install
