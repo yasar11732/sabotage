@@ -255,3 +255,18 @@ diff -r -u -N gdb-7.3.1/gdb/threadpathhack.h gdb-7.3.1-patched//gdb/threadpathha
 +
 +
 +
+diff -r -u -N gdb-7.3.1/bfd/hosts/x86-64linux.h gdb-7.3.1-patched/bfd/hosts/x86-64linux.h 
+--- gdb-7.3.1/bfd/hosts/x86-64linux.h   1970-01-01 00:00:00.000000000 +0000
++++ gdb-7.3.1.patched/bfd/hosts/x86-64linux.h   2011-09-19 15:05:10.971841813 +0000
+@@ -147,6 +147,10 @@
+     int tv_usec;
+   };
+ 
++#ifndef __pid_t
++#define __pid_t pid_t
++#endif
++
+ struct elf_prstatus32
+   {
+     struct elf_siginfo pr_info;                /* Info associated with signal.  */
+
