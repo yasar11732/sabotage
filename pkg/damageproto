@@ -1,0 +1,9 @@
+[main]
+
+[mirrors]
+ftp://ftp.x.org/pub/individual/proto/damageproto-1.2.1.tar.bz2
+
+[build]
+./configure --prefix=/
+make DESTDIR=$R install
+

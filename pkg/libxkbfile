@@ -1,0 +1,12 @@
+[deps]
+libx11
+
+[main]
+
+[mirrors]
+ftp://ftp.x.org/pub/individual/lib/libxkbfile-1.0.7.tar.bz2
+
+[build]
+./configure --prefix=/
+make DESTDIR=$R install
+

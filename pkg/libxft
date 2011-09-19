@@ -1,0 +1,13 @@
+[deps]
+fontconfig
+libxrender
+
+[main]
+
+[mirrors]
+http://xorg.freedesktop.org/releases/individual/lib/libXft-2.2.0.tar.bz2
+
+[build]
+./configure --prefix=/
+make
+make DESTDIR=$R install

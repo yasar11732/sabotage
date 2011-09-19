@@ -1,0 +1,11 @@
+[deps]
+xproto
+
+[main]
+
+[mirrors]
+ftp://ftp.x.org/pub/individual/lib/libXau-1.0.6.tar.bz2
+
+[build]
+./configure --prefix=/
+make DESTDIR=$R install

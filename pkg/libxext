@@ -1,0 +1,14 @@
+[deps]
+xproto
+libx11
+xextproto
+
+[main]
+
+[mirrors]
+ftp://ftp.x.org/pub/individual/lib/libXext-1.2.0.tar.bz2
+
+[build]
+./configure --prefix=/
+make DESTDIR=$R install
+

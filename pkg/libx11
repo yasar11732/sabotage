@@ -1,0 +1,18 @@
+[deps]
+util-macros
+libxcb
+xproto
+xextproto
+xtrans
+kbproto
+inputproto
+
+[main]
+
+[mirrors]
+ftp://ftp.x.org/pub/individual/lib/libX11-1.4.3.tar.bz2
+
+[build]
+./configure --prefix=/ --disable-loadable-xcursor
+make DESTDIR=$R install
+

@@ -1,0 +1,16 @@
+[deps]
+libx11
+libxdmcp
+
+[main]
+tardir=st-0.1.1
+
+[mirrors]
+http://hg.suckless.org/st/archive/0.1.1.tar.gz
+
+[build]
+echo "PREFIX = /" >>config.mk
+make config.h
+sed -i '/FONT/s/".*"/"fixed"/' config.h
+make LIBS="-lX11 -lxcb -lXau -lXdmcp"
+make DESTDIR=$R install

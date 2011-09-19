@@ -1,0 +1,10 @@
+[main]
+
+[mirrors]
+ftp://ftp.x.org/pub/individual/lib/libXpm-3.5.9.tar.bz2
+
+[build]
+sed -i 's/USE_GETTEXT="yes"/USE_GETTEXT="no"/' configure
+./configure --prefix=/
+make DESTDIR=$R install
+

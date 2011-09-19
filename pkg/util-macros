@@ -1,0 +1,8 @@
+[main]
+
+[mirrors]
+http://xorg.freedesktop.org/releases/individual/util/util-macros-1.13.0.tar.bz2
+
+[build]
+./configure --prefix=/
+make DESTDIR=$R install

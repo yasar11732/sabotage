@@ -1,0 +1,14 @@
+[deps]
+libx11
+libxft
+libxdmcp
+
+[main]
+
+[mirrors]
+http://xorg.freedesktop.org/releases/individual/app/xlogo-1.0.3.tar.bz2
+
+[build]
+./configure --prefix=/
+make LIBS="-lfontconfig -lXft -lexpat -lfreetype -lz -lxcb -lXau -lXdmcp -lSM -lXpm -lX11 -lXrender"
+make DESTDIR=$R install
