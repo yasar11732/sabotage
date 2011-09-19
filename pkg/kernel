@@ -10,6 +10,8 @@ xz
 
 [mirrors]
 http://www.kernel.org/pub/linux/kernel/v3.0/linux-3.0.tar.bz2
+http://kambing.ui.ac.id/linux/v3.0/linux-3.0.tar.bz2
+http://mirror.switch.ch/ftp/mirror/gentoo/distfiles/linux-3.0.tar.bz2
 
 [build]
 cd /src
