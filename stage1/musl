@@ -1,6 +1,0 @@
-tarxf http://www.etalabs.net/musl/releases/ musl-0.8.2 .tar.gz
-cp $K/musl.config.mak config.mak
-
-make clean
-make CC=$R/bin/gcc
-make install
