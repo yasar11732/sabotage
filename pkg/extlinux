@@ -5,6 +5,8 @@ perl
 
 [mirrors]
 http://www.kernel.org/pub/linux/utils/boot/syslinux/4.xx/syslinux-4.04.tar.bz2
+http://ftp.wh2.tu-dresden.de/pub/mirrors/kernel.org/linux/boot/syslinux/syslinux-4.04.tar.bz2
+http://ftp.hosteurope.de/mirror/ftp.kernel.org/pub/linux/boot/syslinux/syslinux-4.04.tar.bz2
 
 [build]
 
