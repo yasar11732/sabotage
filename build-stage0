@@ -5,14 +5,7 @@ export H=$(pwd)
 
 . $H/config
 . $H/utils/utils
-
 . $H/utils/prepare-root
+. $H/utils/build-butch
+. $R/bin/butch install stage0
 
-. $H/stage0/gcc3
-. $H/stage0/musl
-. $H/stage0/busybox
-. $H/stage0/binutils
-. $H/stage0/make
-. $H/stage0/mk
-
-. $H/stage0/finish

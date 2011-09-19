@@ -1,5 +1,4 @@
 [deps]
-stage0_prepare
 stage0_gcc3
 stage0_musl
 stage0_butch

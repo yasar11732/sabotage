@@ -2,7 +2,6 @@
 tardir=gcc-3.4.6
 
 [deps]
-stage0_prepare
 
 [mirrors]
 http://ftp.gnu.org/gnu/gcc/gcc-3.4.6/gcc-core-3.4.6.tar.bz2
