@@ -1,4 +1,9 @@
-tarxf http://ftp.gnu.org/gnu/wget/ wget-1.13 .tar.xz
+[main]
+
+[mirrors]
+http://ftp.gnu.org/gnu/wget/wget-1.13.tar.xz
+
+[build]
 ./configure --prefix=/
 make
 make DESTDIR=$R install

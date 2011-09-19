@@ -1,4 +1,9 @@
-tarxf http://python.org/ftp/python/2.7.2/ Python-2.7.2 .tar.bz2
+[main]
+
+[mirrors]
+http://python.org/ftp/python/2.7.2/Python-2.7.2.tar.bz2
+
+[build]
 # we don't have lround on i386, thus -fno-builtin.
 CFLAGS="-fno-builtin" ./configure --prefix=/
 make

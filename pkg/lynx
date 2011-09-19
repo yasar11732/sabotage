@@ -1,4 +1,13 @@
-tarxf http://lynx.isc.org/current/ lynx2.8.8dev.9 .tar.bz2 lynx2-8-8
+[deps]
+ncurses
+
+[main]
+tardir=lynx2-8-8
+
+[mirrors]
+http://lynx.isc.org/current/lynx2.8.8dev.9.tar.bz2
+
+[build]
 
 sed -i 's/define ACCEPT_ALL_COOKIES FALSE/define ACCEPT_ALL_COOKIES TRUE/' userdefs.h
 

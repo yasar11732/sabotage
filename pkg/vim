@@ -1,4 +1,13 @@
-tarxf ftp://ftp.vim.org/pub/vim/unix/ vim-7.3 .tar.bz2 vim73
+[deps]
+ncurses
+
+[main]
+tardir=vim73
+
+[mirrors]
+ftp://ftp.vim.org/pub/vim/unix/vim-7.3.tar.bz2
+
+[build]
 
 PATCHLEVEL=260
 for n in $(seq -w 001 $PATCHLEVEL); do

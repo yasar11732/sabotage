@@ -1,4 +1,9 @@
-tarxf http://www.libssh.org/files/0.5/ libssh-0.5.0 .tar.gz
+[main]
+
+[mirrors]
+http://www.libssh.org/files/0.5/libssh-0.5.0.tar.gz
+
+[build]
 cp $K/libssh-Makefile ./Makefile
 cp $K/libssh-config.mak ./config.mak
 touch include/libssh/config.h

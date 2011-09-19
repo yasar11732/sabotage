@@ -1,4 +1,9 @@
-tarxf http://ftp.gnu.org/pub/gnu/ncurses/ ncurses-5.9 .tar.gz
+[main]
+
+[mirrors]
+http://ftp.gnu.org/pub/gnu/ncurses/ncurses-5.9.tar.gz
+
+[build]
 # that </dev/ptmx is to fix an insanely stupid test for poll which
 # needs to block on fd 1 (which they assume to be a tty).
 CFLAGS=-D_GNU_SOURCE ./configure \

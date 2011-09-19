@@ -1,4 +1,10 @@
-tarxf http://prdownloads.sourceforge.net/libjpeg/ jpegsrc.v6b .tar.gz jpeg-6b
+[main]
+tardir=jpeg-6b
+
+[mirrors]
+http://prdownloads.sourceforge.net/libjpeg/jpegsrc.v6b.tar.gz
+
+[build]
 
 ./configure --prefix=/ --disable-shared --disable-dso
 
