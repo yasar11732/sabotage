@@ -7,11 +7,9 @@ stage0_make
 
 [build]
 mkdir -p $R/src/tarballs
-mkdir -p $R/src/pkg
-mkdir -p $R/src/KEEP
 mkdir -p $R/src/logs
-cp -r $H/KEEP $R/src/KEEP
-cp -r $H/pkg $R/src/pkg
+cp -r $H/KEEP $R/src/
+cp -r $H/pkg $R/src/
 
 cp $K/extlinux.conf $R/boot/
 cp $K/runsvdir-start $R/bin/
