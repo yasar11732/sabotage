@@ -1,0 +1,14 @@
+[main]
+
+[deps]
+stage0_gcc3
+
+[mirrors]
+http://www.etalabs.net/musl/releases/musl-0.8.2.tar.gz
+
+[build]
+cp $K/musl.config.mak config.mak
+
+make CC=$R/bin/gcc
+make install DESTDIR=$R
+sed -i 's:libc_prefix=".*":libc_prefix="'$R'":' $R/bin/musl-gcc
