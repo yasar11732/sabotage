@@ -1,4 +1,5 @@
 export K=$(pwd)/KEEP
+export C=$(pwd)/tarballs
 export S=/tmp/sabotage/src
 export R=/tmp/sabotage/root
 #set your arch
