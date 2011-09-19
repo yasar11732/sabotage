@@ -10,7 +10,7 @@ export H=$(pwd)
 
 mount --rbind /dev $R/dev
 mount --rbind /proc $R/proc
-mount --bind $C $S/src/tarballs
+mount --bind $C $S/tarballs
 
 echo "Entering chroot..."
 SHELL=/bin/sh chroot $R /bin/sh
