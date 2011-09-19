@@ -7,5 +7,5 @@ export H=$(pwd)
 . $H/utils/utils
 . $H/utils/prepare-root
 . $H/utils/build-butch
-. $R/bin/butch install stage0
+$R/bin/butch install stage0
 
