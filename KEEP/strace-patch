@@ -1,0 +1,579 @@
+diff -r -u -N strace-c-original//defs.h strace-c-patched//defs.h
+--- strace-c-original//defs.h	2011-09-20 16:09:19.000000000 +0000
++++ strace-c-patched//defs.h	2011-09-20 19:14:14.000000000 +0000
+@@ -29,6 +29,8 @@
+  *	$Id$
+  */
+ 
++#include <sys/ptrace.h>
++
+ #ifdef HAVE_CONFIG_H
+ #include "config.h"
+ #endif
+@@ -158,19 +160,10 @@
+ #include <asm/ptrace.h>
+ #undef __KERNEL__
+ #endif
+-#ifdef LINUX
+-extern long ptrace(int, int, char *, long);
+-#else /* !LINUX */
+-extern int ptrace(int, int, char *, int, ...);
+-#endif /* !LINUX */
+ #endif /* !LINUXSPARC */
+ #endif /* !SVR4 */
+ 
+ #ifdef LINUX
+-#if !defined(__GLIBC__)
+-#define	PTRACE_PEEKUSER	PTRACE_PEEKUSR
+-#define	PTRACE_POKEUSER	PTRACE_POKEUSR
+-#endif
+ #ifdef ALPHA
+ #  define REG_R0 0
+ #  define REG_A0 16
+diff -r -u -N strace-c-original//file.c strace-c-patched//file.c
+--- strace-c-original//file.c	2011-09-20 16:09:19.000000000 +0000
++++ strace-c-patched//file.c	2011-09-20 19:14:14.000000000 +0000
+@@ -177,21 +177,7 @@
+ # endif
+ #endif
+ 
+-#if HAVE_LONG_LONG_OFF_T
+-/*
+- * Ugly hacks for systems that have typedef long long off_t
+- */
+-
+-#define stat64 stat
+-#define HAVE_STAT64 1	/* Ugly hack */
+-
+-#define	sys_stat64	sys_stat
+-#define sys_fstat64	sys_fstat
+-#define sys_lstat64	sys_lstat
+-#define sys_lseek64	sys_lseek
+-#define sys_truncate64	sys_truncate
+-#define sys_ftruncate64	sys_ftruncate
+-#endif
++#include "off_t_hack.h"
+ 
+ #ifdef MAJOR_IN_SYSMACROS
+ #include <sys/sysmacros.h>
+@@ -626,7 +612,7 @@
+ }
+ #endif
+ 
+-#if _LFS64_LARGEFILE || HAVE_LONG_LONG_OFF_T
++#if defined (_LFS64_LARGEFILE) || defined ( HAVE_LONG_LONG_OFF_T)
+ int
+ sys_lseek64(struct tcb *tcp)
+ {
+@@ -656,7 +642,7 @@
+ }
+ #endif
+ 
+-#if _LFS64_LARGEFILE || HAVE_LONG_LONG_OFF_T
++#if defined(_LFS64_LARGEFILE) || defined(HAVE_LONG_LONG_OFF_T)
+ int
+ sys_truncate64(struct tcb *tcp)
+ {
+@@ -680,7 +666,7 @@
+ }
+ #endif
+ 
+-#if _LFS64_LARGEFILE || HAVE_LONG_LONG_OFF_T
++#if defined (_LFS64_LARGEFILE) || defined (HAVE_LONG_LONG_OFF_T)
+ int
+ sys_ftruncate64(struct tcb *tcp)
+ {
+@@ -979,7 +965,8 @@
+ }
+ #endif
+ 
+-#ifndef HAVE_LONG_LONG_OFF_T
++#if 1
++//#ifndef HAVE_LONG_LONG_OFF_T
+ static void
+ realprintstat(struct tcb *tcp, struct stat *statbuf)
+ {
+@@ -2500,7 +2487,7 @@
+ }
+ 
+ 
+-#if _LFS64_LARGEFILE
++#ifdef _LFS64_LARGEFILE
+ int
+ sys_getdents64(struct tcb *tcp)
+ {
+@@ -2531,16 +2518,16 @@
+ 	if (!abbrev(tcp))
+ 		tprintf("{");
+ 	for (i = 0; i < len;) {
+-		struct dirent64 *d = (struct dirent64 *) &buf[i];
++		struct dirent *d = (struct dirent *) &buf[i];
+ #if defined(LINUX) || defined(SVR4)
+ 		if (!abbrev(tcp)) {
+-			tprintf("%s{d_ino=%" PRIu64 ", d_off=%" PRId64 ", ",
++			tprintf("%s{d_ino=%llu, d_off=%lld, ",
+ 				i ? " " : "",
+ 				d->d_ino,
+ 				d->d_off);
+ #ifdef LINUX
+ 			tprintf("d_type=");
+-			printxval(direnttypes, d->d_type, "DT_???");
++			printxval(direnttypes, (long)d->d_type, "DT_???");
+ 			tprintf(", ");
+ #endif
+ 			tprintf("d_reclen=%u, d_name=\"%s\"}",
+diff -r -u -N strace-c-original//io.c strace-c-patched//io.c
+--- strace-c-original//io.c	2011-09-20 16:09:19.000000000 +0000
++++ strace-c-patched//io.c	2011-09-20 19:14:14.000000000 +0000
+@@ -37,15 +37,6 @@
+ #include <sys/uio.h>
+ #endif
+ 
+-#ifdef HAVE_LONG_LONG_OFF_T
+-/*
+- * Hacks for systems that have a long long off_t
+- */
+-
+-#define sys_pread64	sys_pread
+-#define sys_pwrite64	sys_pwrite
+-#endif
+-
+ int
+ sys_read(struct tcb *tcp)
+ {
+@@ -322,7 +313,7 @@
+ 		else if (umove(tcp, tcp->u_arg[2], &offset) < 0)
+ 			tprintf("%#lx", tcp->u_arg[2]);
+ 		else
+-			tprintf("[%lu]", offset);
++			tprintf("[%llu]", (unsigned long long) offset);
+ 		tprintf(", %lu", tcp->u_arg[3]);
+ 	}
+ 	return 0;
+diff -r -u -N strace-c-original//mem.c strace-c-patched//mem.c
+--- strace-c-original//mem.c	2011-09-20 16:09:19.000000000 +0000
++++ strace-c-patched//mem.c	2011-09-20 19:14:14.000000000 +0000
+@@ -231,7 +231,8 @@
+ }
+ #endif
+ 
+-#if !HAVE_LONG_LONG_OFF_T
++//#if !HAVE_LONG_LONG_OFF_T
++#if 1
+ static int
+ print_mmap(struct tcb *tcp, long *u_arg, long long offset)
+ {
+@@ -314,6 +315,9 @@
+ }
+ #endif
+ 
++#endif //1
++#if !HAVE_LONG_LONG_OFF_T
++
+ int
+ sys_mmap(tcp)
+ struct tcb *tcp;
+diff -r -u -N strace-c-original//net.c strace-c-patched//net.c
+--- strace-c-original//net.c	2011-09-20 16:09:19.000000000 +0000
++++ strace-c-patched//net.c	2011-09-20 19:14:14.000000000 +0000
+@@ -31,6 +31,7 @@
+  */
+ 
+ #include "defs.h"
++#include <linux/tcp.h>
+ 
+ #include <sys/stat.h>
+ #include <sys/socket.h>
+@@ -109,15 +110,6 @@
+ #define HAVE_SENDMSG		1		/* HACK - *FIXME* */
+ #endif
+ 
+-#ifdef LINUX
+-/* Under Linux these are enums so we can't test for them with ifdef. */
+-#define IPPROTO_EGP IPPROTO_EGP
+-#define IPPROTO_PUP IPPROTO_PUP
+-#define IPPROTO_IDP IPPROTO_IDP
+-#define IPPROTO_IGMP IPPROTO_IGMP
+-#define IPPROTO_RAW IPPROTO_RAW
+-#define IPPROTO_MAX IPPROTO_MAX
+-#endif
+ 
+ static const struct xlat domains[] = {
+ #ifdef PF_AAL5
+diff -r -u -N strace-c-original//off_t_hack.h strace-c-patched//off_t_hack.h
+--- strace-c-original//off_t_hack.h	1970-01-01 00:00:00.000000000 +0000
++++ strace-c-patched//off_t_hack.h	2011-09-20 19:14:14.000000000 +0000
+@@ -0,0 +1,27 @@
++#ifndef OFF_T_HACK
++
++#if HAVE_LONG_LONG_OFF_T
++/*
++ * Ugly hacks for systems that have typedef long long off_t
++ */
++
++#define stat64 stat
++#define HAVE_STAT64 1   /* Ugly hack */
++
++#ifndef _LFS64_LARGEFILE
++#define _LFS64_LARGEFILE
++#endif
++
++#define sys_stat64      sys_stat
++#define sys_fstat64     sys_fstat
++#define sys_lstat64     sys_lstat
++#define sys_lseek64     sys_lseek
++#define sys_truncate64  sys_truncate
++#define sys_ftruncate64 sys_ftruncate
++#define sys_statfs64 sys_statfs
++#define sys_fstatfs64 sys_fstatfs
++
++
++#endif
++
++#endif
+diff -r -u -N strace-c-original//scsi.c strace-c-patched//scsi.c
+--- strace-c-original//scsi.c	2011-09-20 16:09:19.000000000 +0000
++++ strace-c-patched//scsi.c	2011-09-20 19:14:14.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ #ifdef LINUX
+ #include <sys/ioctl.h>
+-#include <scsi/sg.h>
++#include "sg.h"
+ 
+ static const struct xlat sg_io_dxfer_direction[] = {
+ 	{SG_DXFER_NONE,        "SG_DXFER_NONE"},
+diff -r -u -N strace-c-original//sg.h strace-c-patched//sg.h
+--- strace-c-original//sg.h	1970-01-01 00:00:00.000000000 +0000
++++ strace-c-patched//sg.h	2011-09-20 19:14:14.000000000 +0000
+@@ -0,0 +1,275 @@
++/* Copyright (C) 1997, 1998, 1999, 2000  Free Software Foundation, Inc.
++   This file is part of the GNU C Library.
++
++   The GNU C Library is free software; you can redistribute it and/or
++   modify it under the terms of the GNU Lesser General Public
++   License as published by the Free Software Foundation; either
++   version 2.1 of the License, or (at your option) any later version.
++
++   The GNU C Library is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++   Lesser General Public License for more details.
++
++   You should have received a copy of the GNU Lesser General Public
++   License along with the GNU C Library; if not, write to the Free
++   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
++   02111-1307 USA.  */
++
++/*
++   History:
++    Started: Aug 9 by Lawrence Foard (entropy@world.std.com), to allow user
++     process control of SCSI devices.
++    Development Sponsored by Killy Corp. NY NY
++*/
++
++#ifndef _SCSI_SG_H
++#define _SCSI_SG_H	1
++
++#include <features.h>
++
++
++/* New interface introduced in the 3.x SG drivers follows */
++
++/* Same structure as used by readv() Linux system call. It defines one
++   scatter-gather element. */
++typedef struct sg_iovec
++{
++  void * iov_base;            /* Starting address  */
++  size_t iov_len;             /* Length in bytes  */
++} sg_iovec_t;
++
++
++typedef struct sg_io_hdr
++{
++  int interface_id;           /* [i] 'S' for SCSI generic (required) */
++  int dxfer_direction;        /* [i] data transfer direction  */
++  unsigned char cmd_len;      /* [i] SCSI command length ( <= 16 bytes) */
++  unsigned char mx_sb_len;    /* [i] max length to write to sbp */
++  unsigned short int iovec_count; /* [i] 0 implies no scatter gather */
++  unsigned int dxfer_len;     /* [i] byte count of data transfer */
++  void * dxferp;              /* [i], [*io] points to data transfer memory
++				 or scatter gather list */
++  unsigned char * cmdp;       /* [i], [*i] points to command to perform */
++  unsigned char * sbp;        /* [i], [*o] points to sense_buffer memory */
++  unsigned int timeout;       /* [i] MAX_UINT->no timeout (unit: millisec) */
++  unsigned int flags;         /* [i] 0 -> default, see SG_FLAG... */
++  int pack_id;                /* [i->o] unused internally (normally) */
++  void * usr_ptr;             /* [i->o] unused internally */
++  unsigned char status;       /* [o] scsi status */
++  unsigned char masked_status;/* [o] shifted, masked scsi status */
++  unsigned char msg_status;   /* [o] messaging level data (optional) */
++  unsigned char sb_len_wr;    /* [o] byte count actually written to sbp */
++  unsigned short int host_status; /* [o] errors from host adapter */
++  unsigned short int driver_status;/* [o] errors from software driver */
++  int resid;                  /* [o] dxfer_len - actual_transferred */
++  unsigned int duration;      /* [o] time taken by cmd (unit: millisec) */
++  unsigned int info;          /* [o] auxiliary information */
++} sg_io_hdr_t;
++
++
++/* Use negative values to flag difference from original sg_header structure.  */
++#define SG_DXFER_NONE -1        /* e.g. a SCSI Test Unit Ready command */
++#define SG_DXFER_TO_DEV -2      /* e.g. a SCSI WRITE command */
++#define SG_DXFER_FROM_DEV -3    /* e.g. a SCSI READ command */
++#define SG_DXFER_TO_FROM_DEV -4 /* treated like SG_DXFER_FROM_DEV with the
++				   additional property than during indirect
++				   IO the user buffer is copied into the
++				   kernel buffers before the transfer */
++
++
++/* following flag values can be "or"-ed together */
++#define SG_FLAG_DIRECT_IO 1     /* default is indirect IO */
++#define SG_FLAG_LUN_INHIBIT 2   /* default is to put device's lun into */
++				/* the 2nd byte of SCSI command */
++#define SG_FLAG_NO_DXFER 0x10000 /* no transfer of kernel buffers to/from */
++				/* user space (debug indirect IO) */
++
++/* The following 'info' values are "or"-ed together.  */
++#define SG_INFO_OK_MASK	0x1
++#define SG_INFO_OK	0x0	/* no sense, host nor driver "noise" */
++#define SG_INFO_CHECK	0x1     /* something abnormal happened */
++
++#define SG_INFO_DIRECT_IO_MASK	0x6
++#define SG_INFO_INDIRECT_IO 	0x0	/* data xfer via kernel buffers (or no xfer) */
++#define SG_INFO_DIRECT_IO 	0x2	/* direct IO requested and performed */
++#define SG_INFO_MIXED_IO 	0x4	/* part direct, part indirect IO */
++
++
++/* Request information about a specific SG device, used by
++   SG_GET_SCSI_ID ioctl ().  */
++struct sg_scsi_id {
++  /* Host number as in "scsi<n>" where 'n' is one of 0, 1, 2 etc.  */
++  int host_no;
++  int channel;
++  /* SCSI id of target device.  */
++  int scsi_id;
++  int lun;
++  /* TYPE_... defined in <scsi/scsi.h>.  */
++  int scsi_type;
++  /* Host (adapter) maximum commands per lun.  */
++  short int h_cmd_per_lun;
++  /* Device (or adapter) maximum queue length.  */
++  short int d_queue_depth;
++  /* Unused, set to 0 for now.  */
++  int unused[2];
++};
++
++/* Used by SG_GET_REQUEST_TABLE ioctl().  */
++typedef struct sg_req_info {
++    char req_state;     /* 0 -> not used, 1 -> written, 2 -> ready to read */
++    char orphan;        /* 0 -> normal request, 1 -> from interruped SG_IO */
++    char sg_io_owned;   /* 0 -> complete with read(), 1 -> owned by SG_IO */
++    char problem;       /* 0 -> no problem detected, 1 -> error to report */
++    int pack_id;        /* pack_id associated with request */
++    void * usr_ptr;     /* user provided pointer (in new interface) */
++    unsigned int duration; /* millisecs elapsed since written (req_state==1)
++			      or request duration (req_state==2) */
++    int unused;
++} sg_req_info_t;
++
++
++/* IOCTLs: Those ioctls that are relevant to the SG 3.x drivers follow.
++ [Those that only apply to the SG 2.x drivers are at the end of the file.]
++ (_GET_s yield result via 'int *' 3rd argument unless otherwise indicated) */
++
++#define SG_EMULATED_HOST 0x2203 /* true for emulated host adapter (ATAPI) */
++
++/* Used to configure SCSI command transformation layer for ATAPI devices */
++/* Only supported by the ide-scsi driver */
++#define SG_SET_TRANSFORM 0x2204 /* N.B. 3rd arg is not pointer but value: */
++		      /* 3rd arg = 0 to disable transform, 1 to enable it */
++#define SG_GET_TRANSFORM 0x2205
++
++#define SG_SET_RESERVED_SIZE 0x2275  /* request a new reserved buffer size */
++#define SG_GET_RESERVED_SIZE 0x2272  /* actual size of reserved buffer */
++
++/* The following ioctl has a 'sg_scsi_id_t *' object as its 3rd argument. */
++#define SG_GET_SCSI_ID 0x2276   /* Yields fd's bus, chan, dev, lun + type */
++/* SCSI id information can also be obtained from SCSI_IOCTL_GET_IDLUN */
++
++/* Override host setting and always DMA using low memory ( <16MB on i386) */
++#define SG_SET_FORCE_LOW_DMA 0x2279  /* 0-> use adapter setting, 1-> force */
++#define SG_GET_LOW_DMA 0x227a   /* 0-> use all ram for dma; 1-> low dma ram */
++
++/* When SG_SET_FORCE_PACK_ID set to 1, pack_id is input to read() which
++   tries to fetch a packet with a matching pack_id, waits, or returns EAGAIN.
++   If pack_id is -1 then read oldest waiting. When ...FORCE_PACK_ID set to 0
++   then pack_id ignored by read() and oldest readable fetched. */
++#define SG_SET_FORCE_PACK_ID 0x227b
++#define SG_GET_PACK_ID 0x227c /* Yields oldest readable pack_id (or -1) */
++
++#define SG_GET_NUM_WAITING 0x227d /* Number of commands awaiting read() */
++
++/* Yields max scatter gather tablesize allowed by current host adapter */
++#define SG_GET_SG_TABLESIZE 0x227F  /* 0 implies can't do scatter gather */
++
++#define SG_GET_VERSION_NUM 0x2282 /* Example: version 2.1.34 yields 20134 */
++
++/* Returns -EBUSY if occupied. 3rd argument pointer to int (see next) */
++#define SG_SCSI_RESET 0x2284
++/* Associated values that can be given to SG_SCSI_RESET follow */
++#define SG_SCSI_RESET_NOTHING	0
++#define SG_SCSI_RESET_DEVICE	1
++#define SG_SCSI_RESET_BUS	2
++#define SG_SCSI_RESET_HOST	3
++
++/* synchronous SCSI command ioctl, (only in version 3 interface) */
++#define SG_IO 0x2285   /* similar effect as write() followed by read() */
++
++#define SG_GET_REQUEST_TABLE 0x2286   /* yields table of active requests */
++
++/* How to treat EINTR during SG_IO ioctl(), only in SG 3.x series */
++#define SG_SET_KEEP_ORPHAN 0x2287 /* 1 -> hold for read(), 0 -> drop (def) */
++#define SG_GET_KEEP_ORPHAN 0x2288
++
++
++#define SG_SCATTER_SZ (8 * 4096)  /* PAGE_SIZE not available to user */
++/* Largest size (in bytes) a single scatter-gather list element can have.
++   The value must be a power of 2 and <= (PAGE_SIZE * 32) [131072 bytes on
++   i386]. The minimum value is PAGE_SIZE. If scatter-gather not supported
++   by adapter then this value is the largest data block that can be
++   read/written by a single scsi command. The user can find the value of
++   PAGE_SIZE by calling getpagesize() defined in unistd.h . */
++
++#define SG_DEFAULT_RETRIES 1
++
++/* Defaults, commented if they differ from original sg driver */
++#define SG_DEF_FORCE_LOW_DMA 0  /* was 1 -> memory below 16MB on i386 */
++#define SG_DEF_FORCE_PACK_ID 0
++#define SG_DEF_KEEP_ORPHAN 0
++#define SG_DEF_RESERVED_SIZE SG_SCATTER_SZ /* load time option */
++
++/* maximum outstanding requests, write() yields EDOM if exceeded */
++#define SG_MAX_QUEUE 16
++
++#define SG_BIG_BUFF SG_DEF_RESERVED_SIZE    /* for backward compatibility */
++
++/* Alternate style type names, "..._t" variants preferred */
++typedef struct sg_io_hdr Sg_io_hdr;
++typedef struct sg_io_vec Sg_io_vec;
++typedef struct sg_scsi_id Sg_scsi_id;
++typedef struct sg_req_info Sg_req_info;
++
++
++/* vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv */
++/*   The older SG interface based on the 'sg_header' structure follows.   */
++/* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */
++
++#define SG_MAX_SENSE 16   /* this only applies to the sg_header interface */
++
++struct sg_header
++ {
++   /* Length of incoming packet (including header).  */
++   int pack_len;
++   /* Maximal length of expected reply.  */
++   int reply_len;
++   /* Id number of packet.  */
++   int pack_id;
++   /* 0==ok, otherwise error number.  */
++   int result;
++   /* Force 12 byte command length for group 6 & 7 commands.  */
++   unsigned int twelve_byte:1;
++   /* SCSI status from target.  */
++   unsigned int target_status:5;
++   /* Host status (see "DID" codes).  */
++   unsigned int host_status:8;
++   /* Driver status+suggestion.  */
++   unsigned int driver_status:8;
++   /* Unused.  */
++   unsigned int other_flags:10;
++   /* Output in 3 cases:
++      when target_status is CHECK_CONDITION or
++      when target_status is COMMAND_TERMINATED or
++      when (driver_status & DRIVER_SENSE) is true.  */
++   unsigned char sense_buffer[SG_MAX_SENSE];
++ };
++
++
++/* IOCTLs: The following are not required (or ignored) when the sg_io_hdr_t
++	   interface is used. They are kept for backward compatibility with
++	   the original and version 2 drivers. */
++
++#define SG_SET_TIMEOUT		0x2201	/* Set timeout; *(int *)arg==timeout.  */
++#define SG_GET_TIMEOUT		0x2202	/* Get timeout; return timeout.  */
++
++/* Get/set command queuing state per fd (default is SG_DEF_COMMAND_Q). */
++#define SG_GET_COMMAND_Q	0x2270	/* Yields 0 (queuing off) or 1 (on).  */
++#define SG_SET_COMMAND_Q 	0x2271	/* Change queuing state with 0 or 1.  */
++
++/* Turn on error sense trace (1..8), dump this device to log/console (9)
++   or dump all sg device states ( >9 ) to log/console.  */
++#define SG_SET_DEBUG		0x227e	/* 0 -> turn off debug */
++
++#define SG_NEXT_CMD_LEN		0x2283	/* Override SCSI command length with given
++					   number on the next write() on this file
++					   descriptor.  */
++
++/* Defaults, commented if they differ from original sg driver */
++#define SG_DEFAULT_TIMEOUT (60*HZ) /* HZ == 'jiffies in 1 second' */
++#define SG_DEF_COMMAND_Q 0     /* command queuing is always on when
++				  the new interface is used */
++#define SG_DEF_UNDERRUN_FLAG 0
++
++
++#endif	/* scsi/sg.h */
+diff -r -u -N strace-c-original//signal.c strace-c-patched//signal.c
+--- strace-c-original//signal.c	2011-09-20 16:09:19.000000000 +0000
++++ strace-c-patched//signal.c	2011-09-20 19:14:14.000000000 +0000
+@@ -37,6 +37,9 @@
+ 
+ #include <stdint.h>
+ #include <signal.h>
++
++# define sigmask(sig) (((unsigned long int) 1) << (((sig) - 1) % (8 * sizeof (unsigned long int))))
++
+ #include <sys/user.h>
+ #include <fcntl.h>
+ 
+@@ -455,7 +458,7 @@
+ 
+ #endif /* LINUX */
+ 
+-#if __GLIBC_MINOR__ < 1
++#if defined(__GLIBC__) && (__GLIBC_MINOR__ < 1)
+ /* Type for data associated with a signal.  */
+ typedef union sigval
+ {
+@@ -1092,6 +1095,7 @@
+ #ifdef HAVE_SIGACTION
+ 
+ #ifdef LINUX
++#define __sighandler_t sighandler_t
+ struct old_sigaction {
+ 	__sighandler_t __sa_handler;
+ 	unsigned long sa_mask;
+diff -r -u -N strace-c-original//syscall.c strace-c-patched//syscall.c
+--- strace-c-original//syscall.c	2011-09-20 16:09:19.000000000 +0000
++++ strace-c-patched//syscall.c	2011-09-20 19:14:14.000000000 +0000
+@@ -111,6 +111,8 @@
+ #define TS TRACE_SIGNAL
+ #define NF SYSCALL_NEVER_FAILS
+ 
++#include "off_t_hack.h"
++
+ static const struct sysent sysent0[] = {
+ #include "syscallent.h"
+ };
+diff -r -u -N strace-c-original//time.c strace-c-patched//time.c
+--- strace-c-original//time.c	2011-09-20 16:09:19.000000000 +0000
++++ strace-c-patched//time.c	2011-09-20 19:14:14.000000000 +0000
+@@ -818,7 +818,8 @@
+ 			/* _pad[0] is the _tid field which might not be
+ 			   present in the userlevel definition of the
+ 			   struct.  */
+-			tprintf("{%d}", sev._sigev_un._pad[0]);
++//			tprintf("{%d}", sev._sigev_un._pad[0]);
++			tprintf("{%d}", (int) sev.__pad[0]);
+ 		else if (sev.sigev_notify == SIGEV_THREAD)
+ 			tprintf("{%p, %p}", sev.sigev_notify_function,
+ 				sev.sigev_notify_attributes);
