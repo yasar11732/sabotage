@@ -4,6 +4,7 @@
 http://ftp.gnu.org/gnu/wget/wget-1.13.tar.xz
 
 [build]
-./configure --prefix=/
+patch -p1 < $K/wget-patch
+CFLAGS=-D_GNU_SOURCE ./configure --prefix=/ --with-ssl=openssl
 make
 make DESTDIR=$R install
