@@ -7,7 +7,7 @@ ncurses
 http://www.nano-editor.org/dist/v2.3/nano-2.3.1.tar.gz
 
 [build]
-./configure --prefix=/
+./configure --prefix=/ --disable-wrapping
 make
 make DESTDIR=$R install
 
