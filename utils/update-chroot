@@ -1,4 +1,4 @@
 #!/bin/sh
-cp -r $H/pkg $S/
-cp -r $H/KEEP $S/
+cp -r pkg $S/
+cp -r KEEP $S/
 
