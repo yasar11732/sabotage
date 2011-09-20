@@ -8,6 +8,10 @@ export H=$(pwd)
 . $H/utils/prepare-root
 . $H/utils/build-butch
 mkdir -p $S/logs
+#remove installed.dat, so installation starts all over
+#stage0 can be continued manually via $/butch.out install stage0
+#in case the build failed or was interrupted.
+rm -f $S/pkg/installed.dat
 cp -r $H/pkg $S/
 cp -r $H/KEEP $S/
 $S/butch.out install stage0
