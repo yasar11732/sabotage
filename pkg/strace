@@ -1,0 +1,11 @@
+[main]
+
+[mirrors]
+http://prdownloads.sourceforge.net/strace/strace-4.6.tar.xz
+http://kent.dl.sourceforge.net/project/strace/strace/4.6/strace-4.6.tar.xz
+http://switch.dl.sourceforge.net/project/strace/strace/4.6/strace-4.6.tar.xz
+
+[build]
+CFLAGS=-D_GNU_SOURCE ./configure --prefix=/
+make
+make DESTDIR=$R install
