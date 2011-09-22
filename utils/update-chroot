@@ -1,4 +1,6 @@
 #!/bin/sh
-cp -r pkg $S/
-cp -r KEEP $S/
+MYDIR=$(dirname "$(readlink -f "$0")")
+
+cp -r $MYDIR/../pkg $S/
+cp -r $MYDIR/../KEEP $S/
 
