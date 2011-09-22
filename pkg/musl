@@ -6,7 +6,7 @@ make
 [main]
 
 [mirrors]
-http://www.etalabs.net/musl/releases/musl-0.8.2.tar.gz
+http://www.etalabs.net/musl/releases/musl-0.8.3.tar.gz
 
 [build]
 cp $K/musl.config.mak config.mak
