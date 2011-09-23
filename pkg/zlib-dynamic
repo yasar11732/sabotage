@@ -1,0 +1,13 @@
+[deps]
+gcc4
+
+[main]
+
+[mirrors]
+http://zlib.net/zlib-1.2.5.tar.gz
+
+[build]
+./configure --prefix=/
+
+make
+make install
