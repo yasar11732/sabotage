@@ -3,6 +3,9 @@ libx11
 libxrender
 libxft
 libxdmcp
+libxaw
+libxmu
+freetype
 
 [main]
 
