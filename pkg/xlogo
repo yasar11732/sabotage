@@ -2,6 +2,8 @@
 libx11
 libxft
 libxdmcp
+libxaw
+libxmu
 
 [main]
 
