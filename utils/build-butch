@@ -1,6 +1,8 @@
-tarxf https://github.com/downloads/rofl0r/butch/ butch-0.0.1 .tar.bz2 butch
+#TODO compare filesize and sha512 of the download with the one from the butch package
+
+tarxf https://github.com/downloads/rofl0r/butch/ butch-0.0.2 .tar.bz2 butch
 
 ./build.sh || exit 1
-cp butch/butch.out $S/
-cp $S/butch-0.0.1.tar.bz2 $C/
+cp butch/butch $S/butch.bin
+cp $S/butch-0.0.2.tar.bz2 $C/
 

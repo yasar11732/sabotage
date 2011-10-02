@@ -15,6 +15,6 @@ mkdir -p $S/logs
 #in case the build failed or was interrupted.
 rm -f $S/pkg/installed.dat
 
-$H/utils/update-chroot
-$S/butch.out install stage0
+$H/utils/update-buildroot
+$S/butch.bin install stage0
 
