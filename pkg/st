@@ -3,6 +3,8 @@ libx11
 libxdmcp
 
 [main]
+filesize=17211
+sha512=4749ab7565844569fb70b686df73d9ebbfe38a326483e656104623cbd34d70e500d64e24af9eca286fd0e03316cd8874b216670b3e5243febf25a31c2bec83c4
 tardir=st-0.1.1
 
 [mirrors]

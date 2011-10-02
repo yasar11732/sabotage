@@ -7,6 +7,8 @@ gcc4
 xz
 
 [main]
+filesize=76753134
+sha512=4a87bba5f62945d226d8c0059d38e6354ad8cd379b8d7936f934a3868a69c6a4c724aad56d974966e8ef1de45f1e0bbe628cb15fc568b6f8cfc63dbc8104bc9d
 
 [mirrors]
 http://www.kernel.org/pub/linux/kernel/v3.0/linux-3.0.tar.bz2

@@ -1,4 +1,6 @@
 [main]
+filesize=92829
+sha512=c6672cc4c9972ff6a2c5109ac69598fe8b9eafb8092248b3c4a6856651fa095a17168b646f1b7bbfbc9544c29971255817d9fae508092ce833194d52dea23138
 
 [mirrors]
 http://xcb.freedesktop.org/dist/xcb-proto-1.6.tar.bz2

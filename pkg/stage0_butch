@@ -1,4 +1,6 @@
 [main]
+filesize=42284
+sha512=6086ad0781e69c8028684c2d5bee2ddc3e7b0a189b06dd19315ce7b8ef2dc5339e0c14783c9b24efe0be5d1cbdf08b01c30b0b3217b8b58f6e7f11d4f73383b3
 tardir=butch
 
 [deps]

@@ -1,4 +1,6 @@
 [main]
+filesize=382389
+sha512=3a7993b452f4c8fd6feed7c414ef82af2f4f5556b6e7d67c8979bf4c0e411bbb23e399d8d6efe7e1615113ff37689a5300f6ae35f75ddeda979d5952027a807f
 
 [mirrors]
 http://downloads.sourceforge.net/psmisc/psmisc-22.13.tar.gz

@@ -2,6 +2,8 @@
 musl
 
 [main]
+filesize=16321720
+sha512=24b8e2f50d7031f255ddbc45e0a608e79f3d0a6c55e2c0243944e23f5ab01679567a92712179e3b2ebd4df89ef3a84ee5ab875bd9cfbda16c0cc14147cdfa705
 
 [mirrors]
 http://www.cpan.org/src/5.0/perl-5.14.1.tar.gz

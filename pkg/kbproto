@@ -1,4 +1,6 @@
 [main]
+filesize=111270
+sha512=9664d443f2c1dfbe6a0404a7d0bafdb6ada7eaab8ebb91711eaa64394a0904176d2ad9107cd074bf2e5045be11c0cd92b676c4ac90adf4e759b38c2e2cbd6e00
 
 [mirrors]
 ftp://ftp.x.org/pub/individual/proto/kbproto-1.0.5.tar.bz2

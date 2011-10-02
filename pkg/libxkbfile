@@ -2,6 +2,8 @@
 libx11
 
 [main]
+filesize=317847
+sha512=58d18cd1249cdbce1868c5e0447b621fe67da3f68307feea66bf545fd0ee5d117943519b1f9680417e6bf8321f88622e500e1c08e17e0d762ac8f5a938f740bc
 
 [mirrors]
 ftp://ftp.x.org/pub/individual/lib/libxkbfile-1.0.7.tar.bz2

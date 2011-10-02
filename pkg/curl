@@ -2,6 +2,8 @@
 openssl
 
 [main]
+filesize=2256354
+sha512=2fb6437b31ed52ee80f183585c3539a470d934f9e9f6d08b24f2b870276411512688d7f34979a2e1852bbd97d7df935c6cb1fef756d7b966189aab267041ec6a
 
 [mirrors]
 http://curl.haxx.se/download/curl-7.21.4.tar.bz2

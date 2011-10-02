@@ -1,4 +1,6 @@
 [main]
+filesize=403788
+sha512=09246a2b104b66f407d35d25407def13a49aaab1fefdb5c3693503d066f18c20b68057fdf7954feaff7281b37b2e503b43eba89b7977108d84cb51e16b57cb43
 
 [mirrors]
 http://prdownloads.sourceforge.net/strace/strace-4.6.tar.xz

@@ -1,4 +1,6 @@
 [main]
+filesize=207724
+sha512=910de76dbcbe752fbbf8e9496e2d5aba480347dabc8dc365362b1835d14d14c9815189b6d77d1d2c63a42cb559800b4a52fa789aa5f1a0c8519768439a9856a8
 
 [mirrors]
 ftp://ftp.x.org/pub/individual/proto/xextproto-7.2.0.tar.bz2

@@ -2,6 +2,8 @@
 util-macros
 
 [main]
+filesize=94970
+sha512=20514a760d27f36f880e1fafde1e25787a1a0b504348a756d6c18c4a0efcb10e2b08e20ec3127d1fc07beaeee9e4d04e59562887d430a4a205bf46fecf0d80a5
 
 [mirrors]
 ftp://ftp.x.org/pub/individual/proto/resourceproto-1.1.1.tar.bz2

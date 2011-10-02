@@ -2,6 +2,8 @@
 curl
 
 [main]
+filesize=2806337
+sha512=91508a9ec0510e8c2416a5ccd16d17984bd188c5a0acea1bd3fb15fac9d2f58bb85ca880d16fdbc40b395bbe44d430f7430763505dd3d7269f97183f10cd9ea9
 
 [mirrors]
 http://www.kernel.org/pub/software/scm/git/git-1.7.6.tar.bz2

@@ -1,4 +1,6 @@
 [main]
+filesize=18997755
+sha512=3f550f6833a41e9b17d1f515eea0de8dc14aefb7dd69c65b821aa1336aea4c3f55b4457a1781ab7b32bda049798fef3cf989148e4acb0fca8baca5af74766f31
 
 [deps]
 stage0_busybox

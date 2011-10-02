@@ -2,6 +2,8 @@
 util-macros
 
 [main]
+filesize=84439
+sha512=050bb8b5f07f2d3765c1b565ced271a37fa1f44e1071d1de0aa56bcdcae59580880cc967412edb37d9741cdfd458856df8a532a3b33ea09ddb3960d9b97569e9
 
 [mirrors]
 ftp://ftp.x.org/pub/individual/proto/recordproto-1.14.tar.bz2

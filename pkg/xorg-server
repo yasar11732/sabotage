@@ -6,6 +6,8 @@ damageproto
 xcmiscproto
 
 [main]
+filesize=5172054
+sha512=f17baa6e871c7df4dc61330e32e235906d9e4c842a70226b0833d2b64ab62811131b960eb942f4dc9359ea828676ce60afd82802aa7cffc711d27c4946c32345
 
 [mirrors]
 ftp://ftp.x.org/pub/individual/xserver/xorg-server-1.9.5.tar.bz2

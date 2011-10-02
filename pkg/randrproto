@@ -2,6 +2,8 @@
 util-macros
 
 [main]
+filesize=122915
+sha512=5aabf757c0c57059a022ebd7181e04caeca43c68461304fe19af719879d0ae5cc1babcb01be2613561b6370f4b939b73b50b09375da7e7b598e27399ae77d66d
 
 [mirrors]
 ftp://ftp.x.org/pub/individual/proto/randrproto-1.3.2.tar.bz2

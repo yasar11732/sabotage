@@ -2,6 +2,8 @@
 libice
 
 [main]
+filesize=284287
+sha512=09fd78a060d4527ae2dcd9458bbb23d9b57d9cbf1bad61a5fcfe7d16436d074cbe3bb6d701a6591d828ef7ed172b05cf198e1c051d3319c3ae082c5ae30f811c
 
 [mirrors]
 ftp://ftp.x.org/pub/individual/lib/libSM-1.2.0.tar.bz2

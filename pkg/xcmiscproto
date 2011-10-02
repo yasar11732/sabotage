@@ -1,4 +1,6 @@
 [main]
+filesize=101926
+sha512=d4894a24fc553c6de2ae2b6fdcbe334967cb804385e4ca2af3ec3dc005727263c78229fd0610c008f76859d3417f86fdf8ad6b42e53e5d5f95d4db0a4bdfcaef
 
 [mirrors]
 ftp://ftp.x.org/pub/individual/proto/xcmiscproto-1.2.1.tar.bz2

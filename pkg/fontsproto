@@ -2,6 +2,8 @@
 util-macros
 
 [main]
+filesize=131040
+sha512=3ac1f7678510d5e9ab6a90e0b9fb035362f2c37b6d43d17864852ae77be0f584dbfa01d81f787c6e5fed4bf520d7a054b9cc3e80678d982a8a437b9cf6260e16
 
 [mirrors]
 ftp://ftp.x.org/pub/individual/proto/fontsproto-2.1.1.tar.bz2

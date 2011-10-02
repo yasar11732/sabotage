@@ -3,6 +3,8 @@ pkg-config
 kernel
 
 [main]
+filesize=4512157
+sha512=077d854e469eb8158460481daadd729ef7fa1c08687b9547397d32d23f862168f53dfcf1ad30cdb3b0deda038e0770a2e656eab5aa06bac5b3c6d939b12af64d
 
 [mirrors]
 http://prdownloads.sourceforge.net/e2fsprogs/e2fsprogs-1.41.14.tar.gz

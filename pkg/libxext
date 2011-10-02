@@ -4,6 +4,8 @@ libx11
 xextproto
 
 [main]
+filesize=313332
+sha512=7e0d9568c97fd299448513b21605379cb21bc3c4c4ab8c0b269e2b7ceefcf5a54f4fe98f79594b6b8a14115fa870d2bcfb8f4e6871dece0756ffe60d741462a8
 
 [mirrors]
 ftp://ftp.x.org/pub/individual/lib/libXext-1.2.0.tar.bz2

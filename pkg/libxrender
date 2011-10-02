@@ -2,6 +2,8 @@
 renderproto
 
 [main]
+filesize=258249
+sha512=78fcb840d98c32a344a2864be851f0280aeec286d0410ef461077f921f19efbc7714620ffa6ff3a8e85699b01fb725cad734641fcb64d920eb2328245b64ebd7
 
 [mirrors]
 ftp://ftp.x.org/pub/individual/lib/libXrender-0.9.6.tar.bz2

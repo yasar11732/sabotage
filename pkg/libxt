@@ -3,6 +3,8 @@ libsm
 libice
 
 [main]
+filesize=715424
+sha512=8494c598f53841841f22e0945257d04ba837dbe32261447bed2223ccd4c9aa8ba5795d5a0825e64178002e1581706f5e64851a633c981fb9ee948536359b3375
 
 [mirrors]
 ftp://ftp.x.org/pub/individual/lib/libXt-1.1.1.tar.bz2

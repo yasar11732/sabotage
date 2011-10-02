@@ -1,4 +1,6 @@
 [main]
+filesize=68189
+sha512=2cfda53ec8a69a356e06c027086010a040279a0c3ce214c961aed5de6a32933306ed445c73eae8a5c56bedceed3ab30a3a37850963e38994b1d8d5041e2ef50c
 
 [mirrors]
 http://xorg.freedesktop.org/releases/individual/util/util-macros-1.13.0.tar.bz2

@@ -1,4 +1,6 @@
 [main]
+filesize=323808
+sha512=ce5c73947328aa97b374b02c60d6bf6449246d313c413ab0703d655236f688d37b0a85918f6cab157ba06b0bdccf4e99f3878e9cff523914d670a02fb7ce6731
 
 [mirrors]
 ftp://ftp.x.org/pub/individual/lib/libICE-1.0.7.tar.bz2

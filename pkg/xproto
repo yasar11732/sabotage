@@ -1,4 +1,6 @@
 [main]
+filesize=275913
+sha512=1c76dfb97b8df1afd0133ebfdedbe9dbf96ebc552370166424fd80748d2dba5f0713bde5f9070e3dedf7d26bace0c5dcf9cdc75ff4c16d613d5e3a7bc128a5a1
 
 [mirrors]
 ftp://ftp.x.org/pub/individual/proto/xproto-7.0.21.tar.bz2
