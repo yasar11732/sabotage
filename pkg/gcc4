@@ -5,6 +5,7 @@ sed
 gmp
 mpfr
 mpc
+zlib
 
 [main]
 filesize=28252641
@@ -24,16 +25,23 @@ sed -i 's@/lib/ld-linux.so.3@/lib/ld-musl-arm.so.1@' gcc/config/arm/linux-eabi.h
 sed -i 's@/lib/ld-linux.so.2@/lib/ld-musl-arm.so.1@' gcc/config/arm/linux-elf.h
 sed -i 's@/lib64/ld-linux-x86-64.so.2@/lib/ld-musl-x86_64.so.1@' gcc/config/i386/linux64.h
 
-if [ -z "$CC" ] ; then
-	CC=gcc
+patch -p1 < $K/gcc-453-patch0.diff || exit 1
+if [ x$A = xarm ] ; then
+	patch -p1 < $K/gcc-453-patch1.diff || exit 1
+	patch -p1 < $K/gcc-453-patch2.diff || exit 1
 fi
 
-export CC="$CC -static -D_GNU_SOURCE" 
-./configure --with-newlib --with-headers=no --prefix=/ \
+export CC="$CC -static -D_GNU_SOURCE -I$R/include -L$R/lib" 
+
+CFLAGS="-O0 -s" LDFLAGS="-Wl--no-keep-memory" ./configure --with-newlib --with-headers=no --prefix=/ \
   --disable-multilib --disable-nls --disable-shared --disable-mudflap \
   --disable-libmudflap --disable-libssp --disable-libgomp \
-  --libdir=/lib --libexecdir=/lib --mandir=/share/man --infodir=/share/info
-make BOOT_LDFLAGS="-static" LDFLAGS="-static" bootstrap
-make -j1 DESTDIR=$R install
+  --disable-debug --disable-bootstrap \
+  --disable-lto --with-system-zlib \
+  --with-target-libiberty=no --with-target-zlib=no \
+  --libdir=/lib --libexecdir=/lib --mandir=/share/man --infodir=/share/info || exit 1
+
+make -j$MAKE_THREADS BOOT_LDFLAGS="-static" LDFLAGS="-static" || exit 1
+make -j1 DESTDIR=$R install || exit 1
 ln -sf gcc $R/bin/cc
 [ "$A" = x86_64 ] && mv $R/lib64/libgcc* $R/lib || true
