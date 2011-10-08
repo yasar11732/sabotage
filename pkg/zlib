@@ -1,5 +1,4 @@
 [deps]
-gcc4
 
 [main]
 filesize=544640
@@ -9,9 +8,9 @@ sha512=83ce467787903b7e90ece203aaea0be42174b9cf4a9aa16fe3f72925a4993b549d50154de
 http://zlib.net/zlib-1.2.5.tar.gz
 
 [build]
-./configure --prefix=/ --static
+CC="$CC -static" ./configure --prefix=/ --static
 
-make
+make -j$MAKE_THREADS
 # make install is broken
 ranlib libz.a
 install -m644 libz.a $R/lib
