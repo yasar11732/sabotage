@@ -1,4 +1,9 @@
 #!/bin/bash
+stage=$1
+if [ -z "$stage" ] ; then
+	echo "error, pass either 0 or 1 as first argument!"
+	echo "will build the according stage."
+fi
 
 set -e -x
 export H=$(pwd)
@@ -16,5 +21,5 @@ mkdir -p $S/logs
 rm -f $S/pkg/installed.dat
 
 $H/utils/update-buildroot
-$S/butch.bin install stage0
+$S/butch.bin install stage$stage
 
