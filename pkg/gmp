@@ -9,6 +9,6 @@ sha512=b53cc482e73aa91ae4f83301d9ef83a98cd85cfe53347e102a059fa477edceebded466223
 ftp://ftp.gmplib.org/pub/gmp-5.0.2/gmp-5.0.2.tar.bz2
 
 [build]
-./configure --prefix=/ --disable-shared
-make
+CC="$CC -static" ./configure --prefix=/ --disable-shared || exit 1
+make -j$MAKE_THREADS || exit 1
 make DESTDIR=$R install
