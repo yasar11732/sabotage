@@ -1,0 +1,12 @@
+--- binutils-2.21.1/include/bfdlink.h
++++ binutils-patched/include/bfdlink.h
+@@ -90,6 +90,9 @@
+   struct bfd_hash_entry root;
+ 
+   /* Type of this entry.  */
++  #ifndef ENUM_BITFIELD
++  #define ENUM_BITFIELD(X) unsigned int
++  #endif
+   ENUM_BITFIELD (bfd_link_hash_type) type : 8;
+ 
+   unsigned int non_ir_ref : 1;
