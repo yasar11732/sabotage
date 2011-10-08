@@ -6,6 +6,6 @@ sha512=273d4d0b3dd41a3966260fbe261a20110a2a4c0749e11a080f4fc8694e47b605cb977f253
 http://ftp.gnu.org/pub/gnu/sed/sed-4.2.1.tar.bz2
 
 [build]
-./configure --prefix=/ --disable-nls
-make
+CC="$CC -static" ./configure --prefix=/ --disable-nls || exit 1
+make -j$MAKE_THREADS || exit 1
 make DESTDIR=$R install
