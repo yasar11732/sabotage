@@ -6,7 +6,7 @@ sha512=ae86978b2eb23e0afd9ae551db997a0c57faffbca95a5bac71480e24237d7ddd17d7bc00c
 http://ftp.gnu.org/gnu/m4/m4-1.4.16.tar.bz2
 
 [build]
-patch -p1 <$K/m4-hack-gnulib.patch
-./configure --prefix=/
-make
+patch -p1 <$K/m4-hack-gnulib.patch || exit 1
+CC="$CC -static" ./configure --prefix=/ || exit 1
+make -j$MAKE_THREADS
 make DESTDIR=$R install
