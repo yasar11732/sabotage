@@ -9,7 +9,7 @@ sha512=3f550f6833a41e9b17d1f515eea0de8dc14aefb7dd69c65b821aa1336aea4c3f55b4457a1
 http://ftp.gnu.org/gnu/binutils/binutils-2.21.1.tar.bz2
 
 [build]
-./configure --prefix=/ --disable-nls --disable-shared
+CC="$CC -static -L$R/lib -I$R/include" ./configure --prefix=/ --disable-nls --disable-shared || exit 1
 echo "#define __pid_t int" >include/features.h
-make tooldir=$R
+make -j$MAKE_THREADS tooldir=$R || exit 1
 make tooldir=$R prefix=$R install
