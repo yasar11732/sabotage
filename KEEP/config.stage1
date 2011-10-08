@@ -3,4 +3,7 @@ export S=/src
 export R=/
 export C=/src/tarballs
 export LOGPATH=/src/logs
-
+#MAKE_THREADS is passed via -j to make
+#do only set it to more than 1 if you're using distcc
+#'cause butch will already build stuff in parallel, if possible
+export MAKE_THREADS=1
