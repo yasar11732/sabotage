@@ -33,7 +33,7 @@ fi
 
 export CC="$CC -static -D_GNU_SOURCE -I$R/include -L$R/lib" 
 
-CFLAGS="-O0 -s" LDFLAGS="-Wl--no-keep-memory" ./configure --with-newlib --with-headers=no --prefix=/ \
+CFLAGS="-O0 -s" LDFLAGS="-Wl,--no-keep-memory" ./configure --with-newlib --with-headers=no --prefix=/ \
   --disable-multilib --disable-nls --disable-shared --disable-mudflap \
   --disable-libmudflap --disable-libssp --disable-libgomp \
   --disable-debug --disable-bootstrap \
