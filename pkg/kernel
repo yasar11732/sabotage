@@ -30,7 +30,7 @@ export HOSTCC="$CC"
 export ARCH=$A
 
 if [ "$A" = arm ] ; then
-	[ -z $ARM_ARCH ] && (echo "error: need to set ARM_ARCH to 4-7" ; exit 1)
+	[ -z "$ARM_ARCH" ] && (echo "error: need to set ARM_ARCH to 4-7" ; exit 1)
 	HOSTCC="$HOSTCC -D__LINUX__ARM_ARCH__=$ARM_ARCH"
 	CC="$CC -D__LINUX__ARM_ARCH__=$ARM_ARCH"
 fi
