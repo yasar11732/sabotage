@@ -27,6 +27,14 @@ cat $K/linux-arm.patch $K/linux-bootraw.patch \
     $K/linux-pmacorder.patch | patch -p1 || exit 1
 
 export HOSTCC="$CC"
+export ARCH=$A
+
+if [ "$A" = arm ] ; then
+	[ -z $ARM_ARCH ] && (echo "error: need to set ARM_ARCH to 4-7" ; exit 1)
+	HOSTCC="$HOSTCC -D__LINUX__ARM_ARCH__=$ARM_ARCH"
+	CC="$CC -D__LINUX__ARM_ARCH__=$ARM_ARCH"
+fi
+
 make allnoconfig HOSTCFLAGS="-D_GNU_SOURCE" KCONFIG_ALLCONFIG=$K/linux.config || exit 1
 
 make HOSTCFLAGS=-D_GNU_SOURCE INSTALL_HDR_PATH=dest headers_install || exit 1
