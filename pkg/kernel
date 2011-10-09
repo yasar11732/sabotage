@@ -28,14 +28,16 @@ cat $K/linux-arm.patch $K/linux-bootraw.patch \
 
 export HOSTCC="$CC"
 export ARCH=$A
+linux_config="$K/linux.config"
 
 if [ "$A" = arm ] ; then
 	[ -z "$ARM_ARCH" ] && (echo "error: need to set ARM_ARCH to 4-7" ; exit 1)
-	HOSTCC="$HOSTCC -D__LINUX__ARM_ARCH__=$ARM_ARCH"
-	CC="$CC -D__LINUX__ARM_ARCH__=$ARM_ARCH"
+	linux_config="$linux_config $K/linux.config.armv${ARM_ARCH}l"
 fi
 
-make allnoconfig HOSTCFLAGS="-D_GNU_SOURCE" KCONFIG_ALLCONFIG=$K/linux.config || exit 1
+cat $linux_config > my.config
+
+make allnoconfig HOSTCFLAGS="-D_GNU_SOURCE" KCONFIG_ALLCONFIG=my.config || exit 1
 
 make HOSTCFLAGS=-D_GNU_SOURCE INSTALL_HDR_PATH=dest headers_install || exit 1
 find dest/include \( -name .install -o -name ..install.cmd \) -delete
