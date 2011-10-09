@@ -22,6 +22,11 @@ patch -p1 < $K/linux-ubi.patch || exit 1
 cat $K/linux-noperl-capflags.patch $K/linux-noperl-headers.patch \
     $K/linux-noperl-timeconst.patch $K/linux-posix-sed.patch | patch -p1 || exit 1
 
+cat $K/linux-arm.patch $K/linux-bootraw.patch \
+    $K/linux-fixsh4.patch $K/linux-mips64fix.patch \
+    $K/linux-pmacorder.patch | patch -p1 || exit 1
+
+export HOSTCC="$CC"
 make allnoconfig HOSTCFLAGS="-D_GNU_SOURCE" KCONFIG_ALLCONFIG=$K/linux.config || exit 1
 
 make HOSTCFLAGS=-D_GNU_SOURCE INSTALL_HDR_PATH=dest headers_install || exit 1
