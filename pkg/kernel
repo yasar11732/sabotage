@@ -2,7 +2,6 @@
 binutils
 make
 sed
-perl
 gcc4
 xz
 
@@ -16,20 +15,28 @@ http://kambing.ui.ac.id/linux/v3.0/linux-3.0.tar.bz2
 http://mirror.switch.ch/ftp/mirror/gentoo/distfiles/linux-3.0.tar.bz2
 
 [build]
-cd /src
-ln -sf linux-3.0 linux
-cd linux
 
-cp $K/kernel.config .config
 #apply a header patch needed for busybox
-patch -p1 < $K/linux-ubi.patch
-# FIXME: xz compression doesn't work with busybox.
-make HOSTCFLAGS=-D_GNU_SOURCE oldconfig
-make HOSTCFLAGS=-D_GNU_SOURCE 
+patch -p1 < $K/linux-ubi.patch || exit 1
+
+cat $K/linux-noperl-capflags.patch $K/linux-noperl-headers.patch \
+    $K/linux-noperl-timeconst.patch $K/linux-posix-sed.patch | patch -p1 || exit 1
+
+make allnoconfig HOSTCFLAGS="-D_GNU_SOURCE" KCONFIG_ALLCONFIG=$K/linux.config || exit 1
+
+make HOSTCFLAGS=-D_GNU_SOURCE INSTALL_HDR_PATH=dest headers_install || exit 1
+find dest/include \( -name .install -o -name ..install.cmd \) -delete
+cp -rv dest/include/* $R/include/
+
+make -j$MAKE_THREADS HOSTCFLAGS=-D_GNU_SOURCE || exit 1
+make INSTALL_MOD_PATH=$R modules_install || exit 1
 
 mkdir -p $R/boot $R/lib/modules $R/lib/firmware
-cp System.map $R/boot
-cp arch/x86/boot/bzImage $R/boot/vmlinuz
-make INSTALL_MOD_PATH=$R modules_install
-make HOSTCFLAGS=-D_GNU_SOURCE headers_install
-cp -r usr/include/* $R/include/
+cp System.map $R/boot/
+
+kpath=x86
+if [ "$A" = arm ] ; then
+	kpath=arm
+fi
+cp arch/${kpath}/boot/bzImage $R/boot/vmlinuz
+
