@@ -12,11 +12,11 @@ http://www.busybox.net/downloads/busybox-1.19.2.tar.bz2
 [build]
 
 cp $K/busybox.stage1.config .config
-patch -p1 <$K/busybox.patch
-if make HOSTCFLAGS=-D_GNU_SOURCE ; then
-	cp busybox $R/bin
-	cd $R/bin
-	for f in $(./busybox --list); do
-	  [ ! -f $f ] || [ $(readlink $f) = busybox ] && ln -sf busybox $f
-	done
-fi
+patch -p1 <$K/busybox.patch || exit 1
+patch -p1 <$K/busybox-patch.patch || exit 1
+make HOSTCFLAGS=-D_GNU_SOURCE -j$MAKE_THREADS || exit 1
+cp busybox $R/bin
+cd $R/bin
+for f in $(./busybox --list); do
+  [ ! -f $f ] || [ $(readlink $f) = busybox ] && ln -sf busybox $f
+done
