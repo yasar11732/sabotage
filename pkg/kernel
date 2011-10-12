@@ -18,7 +18,6 @@ http://mirror.switch.ch/ftp/mirror/gentoo/distfiles/linux-3.0.tar.bz2
 
 #apply a header patch needed for busybox
 patch -p1 < $K/linux-ubi.patch || exit 1
-
 cat $K/linux-noperl-capflags.patch $K/linux-noperl-headers.patch \
     $K/linux-noperl-timeconst.patch $K/linux-posix-sed.patch | patch -p1 || exit 1
 
@@ -26,9 +25,12 @@ cat $K/linux-arm.patch $K/linux-bootraw.patch \
     $K/linux-fixsh4.patch $K/linux-mips64fix.patch \
     $K/linux-pmacorder.patch | patch -p1 || exit 1
 
-export HOSTCC="$CC"
 export ARCH=$A
 linux_config="$K/linux.config"
+
+if [ -z "$HOSTCC" ] ; then
+	HOSTCC="$CC"
+fi
 
 if [ "$A" = arm ] ; then
 	[ -z "$ARM_ARCH" ] && (echo "error: need to set ARM_ARCH to 4-7" ; exit 1)
@@ -39,19 +41,23 @@ cat $linux_config > my.config
 
 make allnoconfig HOSTCFLAGS="-D_GNU_SOURCE" KCONFIG_ALLCONFIG=my.config || exit 1
 
-make HOSTCFLAGS=-D_GNU_SOURCE INSTALL_HDR_PATH=dest headers_install || exit 1
+make ARCH=$A HOSTCFLAGS=-D_GNU_SOURCE INSTALL_HDR_PATH=dest headers_install || exit 1
 find dest/include \( -name .install -o -name ..install.cmd \) -delete
 cp -rv dest/include/* $R/include/
 
-make -j$MAKE_THREADS HOSTCFLAGS=-D_GNU_SOURCE || exit 1
+#let make create dependencies, otherwise parallel build wont work
+make CC="$CC" HOSTCC="$HOSTCC" ARCH=$A HOSTCFLAGS=-D_GNU_SOURCE dep || exit 1
+
+make -j$MAKE_THREADS CC="$CC" V=1 ARCH=$A HOSTCC="$HOSTCC" HOSTCFLAGS=-D_GNU_SOURCE || exit 1
 make INSTALL_MOD_PATH=$R modules_install || exit 1
 
 mkdir -p $R/boot $R/lib/modules $R/lib/firmware
 cp System.map $R/boot/
 
-kpath=x86
 if [ "$A" = arm ] ; then
-	kpath=arm
+	kpath="arch/arm/boot/zImage"
+else
+	kpath="arch/x86/boot/bzImage"
 fi
-cp arch/${kpath}/boot/bzImage $R/boot/vmlinuz
+cp $kpath $R/boot/vmlinuz
 
