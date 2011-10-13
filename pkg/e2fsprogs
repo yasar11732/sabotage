@@ -10,9 +10,9 @@ sha512=077d854e469eb8158460481daadd729ef7fa1c08687b9547397d32d23f862168f53dfcf1a
 http://prdownloads.sourceforge.net/e2fsprogs/e2fsprogs-1.41.14.tar.gz
 
 [build]
-
-./configure --prefix=/ --with-root-prefix="" --sbindir=/bin --disable-nls --disable-tls
+patch -p1 < $K/e2fsprogs-nonx86.patch || exit 1
+CC="$CC -static -L$R/lib -I$R/include -fgnu89-inline" ./configure --prefix=/ --with-root-prefix="" --sbindir=/bin --disable-nls --disable-tls || exit 1
 sed -i 's:sys/signal.h:signal.h:' misc/fsck.c
-make CFLAGS="-D_GNU_SOURCE -include math.h -Dopen64=open"
+make -j$MAKE_THREADS V=1 CFLAGS="-D_GNU_SOURCE -include math.h -Dopen64=open" || exit 1
 # dont fail because of makeinfo
 make DESTDIR=$R install -k
