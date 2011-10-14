@@ -15,9 +15,9 @@ http://ftp.uni-ulm.de/pub/mirrors/kernel.org/boot/syslinux/4.xx/syslinux-4.04.ta
 
 sed -i '/#define statfs/d;/#undef statfs/d' libinstaller/linuxioctl.h
 
-make -C libinstaller
-make -C extlinux OPTFLAGS="-g -Os -D_GNU_SOURCE" LDFLAGS="-static"
-make -C linux OPTFLAGS="-g -Os -D_GNU_SOURCE" LDFLAGS="-static"
+make -j$MAKE_THREADS -C libinstaller || exit 1
+make -j$MAKE_THREADS -C extlinux OPTFLAGS="-g -Os -D_GNU_SOURCE" LDFLAGS="-static" || exit 1
+make -j$MAKE_THREADS -C linux OPTFLAGS="-g -Os -D_GNU_SOURCE" LDFLAGS="-static" || exit 1
 
 cp extlinux/extlinux $R/bin
 cp linux/syslinux $R/bin
