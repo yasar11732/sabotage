@@ -4,11 +4,11 @@ binutils
 make
 
 [main]
-filesize=500977
-sha512=cc0855ef993f485da00f84eec2c5936ff715d14149d66721951b57bc09df5865e10188834dda79a1278b1ddee54582e99ec09ee0c7df913b2de523e20a8ce46b
+filesize=504356
+sha512=a13af13f4752eb94f0df1d34045f6053b9005556ff4e43d1eecb58d807d2dcdd294840f090a41c33b75ccea48b0e7f7f11325e6083b4196165d407d6bafd451c
 
 [mirrors]
-http://www.etalabs.net/musl/releases/musl-0.8.3.tar.gz
+http://www.etalabs.net/musl/releases/musl-0.8.4.tar.gz
 
 [build]
 cp $K/musl.config.mak config.mak
