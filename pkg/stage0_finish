@@ -16,7 +16,8 @@ cp $K/runsvdir-start $R/bin/
 cp -r $K/etc/* $R/etc/
 chmod 0600 $R/etc/shadow
 for s in $R/etc/service/*; do
-  ln -s /etc/service/${s##*/} ${s/etc/var}
+  bn=`basename $s`
+  ln -s /etc/service/${bn} `(echo $s | sed s,etc,var)`
 done
 
 #cp -r $H $R/src/sabotage
