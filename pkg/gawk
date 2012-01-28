@@ -6,7 +6,7 @@ sha512=9a337673725d3190c76da7e61f9b5e6df348eb4e08a3f7a7a1b5869d0bec6514d97782dff
 ftp://ftp.gnu.org/pub/gnu/gawk/gawk-4.0.0.tar.bz2
 
 [build]
-CC="$CC -static" ./configure --prefix=/ --libexecdir=/lib --disable-nls || exit 1
+CC="$CC -static" ./configure --prefix=/ --libexecdir=/lib --disable-nls ac_cv_header_dlfcn_h=no || exit 1
 make -j$MAKE_THREADS || exit 1
 make DESTDIR=$R install || exit 1
 ln -sf gawk $R/bin/awk
