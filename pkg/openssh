@@ -5,6 +5,9 @@ sha512=cad3b92e2e5494d1cff25753913f8fd27041cb1083e2cb8d14faaed7e4d818a98a6c3038d
 [mirrors]
 http://ftp.spline.de/pub/OpenBSD/OpenSSH/portable/openssh-5.8p2.tar.gz
 
+[deps]
+openssl
+
 [build]
 
 cp $K/openssh-hacks.h .
