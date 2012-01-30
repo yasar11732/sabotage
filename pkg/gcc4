@@ -6,6 +6,7 @@ gmp
 mpfr
 mpc
 zlib
+elfutils
 
 [main]
 filesize=28252641
@@ -37,7 +38,7 @@ CFLAGS="-O0 -s" LDFLAGS="-Wl,--no-keep-memory" ./configure --with-newlib --with-
   --disable-multilib --disable-nls --disable-shared --disable-mudflap \
   --disable-libmudflap --disable-libssp --disable-libgomp \
   --disable-debug --disable-bootstrap \
-  --disable-lto --with-system-zlib \
+  --enable-lto --with-system-zlib \
   --with-target-libiberty=no --with-target-zlib=no \
   --libdir=/lib --libexecdir=/lib --mandir=/share/man --infodir=/share/info || exit 1
 
