@@ -1,14 +1,15 @@
 [main]
-filesize=18997755
-sha512=3f550f6833a41e9b17d1f515eea0de8dc14aefb7dd69c65b821aa1336aea4c3f55b4457a1781ab7b32bda049798fef3cf989148e4acb0fca8baca5af74766f31
+filesize=19973532
+sha512=ffe8ef263ef99183e8cc823fe8487ff7d0f7bf9a8efd2853b5f4636aca0023850d13de4eac7d77a5f69413d8a50e6f95bb14569be53df86c0bce38034525ab74
+
+[mirrors]
+http://ftp.gnu.org/gnu/binutils/binutils-2.22.tar.bz2
 
 [deps]
 stage0_busybox
 
-[mirrors]
-http://ftp.gnu.org/gnu/binutils/binutils-2.21.1.tar.bz2
-
 [build]
+patch -p1 < $K/binutils-arm.diff || exit 1
 CC="$R/bin/musl-gcc -static" ./configure --prefix=/ --disable-nls --disable-shared
 echo "#define __pid_t int" >include/features.h
 make CC="$R/bin/musl-gcc -static"
