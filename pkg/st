@@ -1,6 +1,7 @@
 [deps]
 libx11
 libxdmcp
+ncurses
 
 [main]
 filesize=17211
