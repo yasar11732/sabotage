@@ -7,5 +7,5 @@ http://tukaani.org/xz/xz-5.0.3.tar.bz2
 
 [build]
 ./configure --prefix=/ --disable-nls --disable-shared
-make
+make -j$MAKE_THREADS
 make DESTDIR=$R install

@@ -19,5 +19,5 @@ cat <<EOF >>ptyx.h
 static inline int getpt() { return open("/dev/ptmx",O_RDWR|O_NOCTTY); }
 #endif
 EOF
-make
+make -j$MAKE_THREADS 
 make DESTDIR=$R install

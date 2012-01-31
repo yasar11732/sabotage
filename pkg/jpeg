@@ -10,7 +10,7 @@ http://prdownloads.sourceforge.net/libjpeg/jpegsrc.v6b.tar.gz
 
 ./configure --prefix=/ --disable-shared --disable-dso
 
-make
+make -j$MAKE_THREADS
 make install
 make install-lib
 make install-headers

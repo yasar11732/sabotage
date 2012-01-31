@@ -14,5 +14,5 @@ http://www.etalabs.net/musl/releases/musl-0.8.4.tar.gz
 cp $K/musl.config.mak config.mak
 
 make clean
-make CC=$R/bin/gcc
+make CC=$R/bin/gcc -j$MAKE_THREADS
 make install

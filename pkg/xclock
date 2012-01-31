@@ -1,4 +1,5 @@
 [deps]
+expat
 libx11
 libxrender
 libxft
@@ -16,5 +17,5 @@ http://xorg.freedesktop.org/releases/individual/app/xclock-1.0.5.tar.gz
 
 [build]
 ./configure --prefix=/
-make LIBS="-lfontconfig -lexpat -lfreetype -lz -lXrender -lXext -lXpm -lX11 -lxcb -lXau -lSM -lICE -lXdmcp"
+make -j$MAKE_THREADS LIBS="-lfontconfig -lexpat -lfreetype -lz -lXrender -lXext -lXpm -lX11 -lxcb -lXau -lSM -lICE -lXdmcp"
 make DESTDIR=$R install

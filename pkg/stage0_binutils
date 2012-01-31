@@ -12,5 +12,5 @@ stage0_busybox
 patch -p1 < $K/binutils-arm.diff || exit 1
 CC="$R/bin/musl-gcc -static" ./configure --prefix=/ --disable-nls --disable-shared
 echo "#define __pid_t int" >include/features.h
-make CC="$R/bin/musl-gcc -static"
+make CC="$R/bin/musl-gcc -static" -j$MAKE_THREADS
 make DESTDIR=$R tooldir=/ install

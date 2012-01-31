@@ -11,5 +11,5 @@ http://curl.haxx.se/download/curl-7.21.4.tar.bz2
 [build]
 
 ./configure --prefix=/ --disable-shared --enable-ipv6 --with-random=/dev/urandom
-make
+make -j$MAKE_THREADS
 make DESTDIR=$R install

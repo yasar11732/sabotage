@@ -12,7 +12,7 @@ http://www.busybox.net/downloads/busybox-1.19.2.tar.bz2
 
 cp $K/busybox.stage0.config .config
 patch -p1 <$K/busybox.patch
-make CFLAGS_busybox="-Wl,-z,muldefs" HOSTCC=gcc CC=$R/bin/musl-gcc
+make CFLAGS_busybox="-Wl,-z,muldefs" HOSTCC=gcc CC=$R/bin/musl-gcc -j$MAKE_THREADS
 cp busybox $R/bin
 cd $R/bin
 for f in $(./busybox --list); do

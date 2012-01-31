@@ -7,5 +7,5 @@ http://downloads.sourceforge.net/sourceforge/flex/flex-2.5.35.tar.bz2
 
 [build]
 ./configure --prefix=/ --disable-nls --infodir=/share/info --mandir=/share/man
-make
+make -j$MAKE_THREADS
 make DESTDIR=$R install

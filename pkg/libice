@@ -1,5 +1,6 @@
 [deps]
 pkg-config
+xproto
 
 [main]
 filesize=323808
@@ -10,5 +11,5 @@ ftp://ftp.x.org/pub/individual/lib/libICE-1.0.7.tar.bz2
 
 [build]
 ./configure --prefix=/
-make DESTDIR=$R install
+make DESTDIR=$R -j$MAKE_THREADS install
 

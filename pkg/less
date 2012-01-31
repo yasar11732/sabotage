@@ -10,5 +10,5 @@ http://www.greenwoodsoftware.com/less/less-444.tar.gz
 
 [build]
 ./configure --prefix=/
-make
+make -j$MAKE_THREADS
 make DESTDIR=$R install

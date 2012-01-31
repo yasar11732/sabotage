@@ -15,4 +15,4 @@ http://xorg.freedesktop.org/releases/individual/app/xlogo-1.0.3.tar.bz2
 [build]
 ./configure --prefix=/
 make LIBS="-lfontconfig -lXft -lexpat -lfreetype -lz -lxcb -lXau -lXdmcp -lSM -lXpm -lX11 -lXrender"
-make DESTDIR=$R install
+make DESTDIR=$R -j$MAKE_THREADS install

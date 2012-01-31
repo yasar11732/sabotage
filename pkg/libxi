@@ -11,5 +11,5 @@ ftp://ftp.x.org/pub/individual/lib/libXi-1.4.2.tar.bz2
 
 [build]
 ./configure --prefix=/
-make DESTDIR=$R install
+make DESTDIR=$R -j$MAKE_THREADS install
 

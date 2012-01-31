@@ -22,7 +22,7 @@ touch netinet/in_systm.h
 
 sed -i '/USE_BTMP/d' config.h
 
-make
+make -j$MAKE_THREADS
 
 chown root:root /var/empty
 chmod 0755 /var/empty

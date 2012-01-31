@@ -12,5 +12,5 @@ ftp://ftp.x.org/pub/individual/lib/libXt-1.1.1.tar.bz2
 
 [build]
 ./configure --prefix=/
-make DESTDIR=$R install
+make DESTDIR=$R -j$MAKE_THREADS install
 

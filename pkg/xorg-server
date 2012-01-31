@@ -21,6 +21,6 @@ CFLAGS="-D__gid_t=gid_t -D__uid_t=uid_t -DNOFILES_MAX=256 -D_GNU_SOURCE -I/inclu
     --disable-glx --disable-dri \
     --disable-xorg \
     --enable-kdrive --enable-kdrive-evdev
-make
+make -j$MAKE_THREADS
 make DESTDIR=$R install
 ln -sf Xfbdev $R/bin/X

@@ -8,5 +8,5 @@ http://ftp.gnu.org/gnu/wget/wget-1.13.tar.xz
 [build]
 patch -p1 < $K/wget-patch
 CFLAGS=-D_GNU_SOURCE ./configure --prefix=/ --with-ssl=openssl
-make
+make -j$MAKE_THREADS
 make DESTDIR=$R install
