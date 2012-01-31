@@ -3,6 +3,16 @@ export C=$(pwd)/tarballs
 export S=/tmp/sabotage/src
 export R=/tmp/sabotage/root
 export LOGPATH=$S/logs
+
 #set your arch
 export A=i386
 #export A=x86_64
+#export A=arm
+
+#export your compiler env
+export CC=gcc
+export HOSTCC=gcc
+#export CROSS_COMPILE=armv6l
+
+#export your core count for faster builds...
+export MAKE_THREADS=1
