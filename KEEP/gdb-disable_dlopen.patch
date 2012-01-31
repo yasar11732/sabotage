@@ -1,0 +1,30 @@
+--- gdb-7.3.1/gdb/linux-thread-db.c	2012-01-31 14:00:56.642829156 +0100
++++ gdb-7.3.1-patched/gdb/linux-thread-db.c	2012-01-31 14:02:33.094867819 +0100
+@@ -75,6 +75,27 @@
+    of the ptid_t prevents thread IDs changing when libpthread is
+    loaded or unloaded.  */
+ 
++void *dlopen(const char *file, int mode) {
++	(void) file;
++	(void) mode;
++	return NULL;
++}
++
++char *dlerror(void) {
++	return "not implemented";
++}
++
++int dlclose(void *handle) {
++	(void) handle;
++	return -1;
++}
++
++void *dlsym(void *restrict handle, const char *restrict name) {
++	(void) handle;
++	(void) name;
++	return NULL;
++}
++
+ static char *libthread_db_search_path;
+ 
+ /* If non-zero, print details of libthread_db processing.  */
