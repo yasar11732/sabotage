@@ -1,5 +1,7 @@
 [deps]
 freetype
+pkg-config
+expat
 
 [main]
 filesize=1548409

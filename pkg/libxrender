@@ -1,5 +1,6 @@
 [deps]
 renderproto
+libx11
 
 [main]
 filesize=258249

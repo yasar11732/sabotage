@@ -1,6 +1,7 @@
 [deps]
 libsm
 libice
+libx11
 
 [main]
 filesize=715424
