@@ -1,6 +1,7 @@
 [deps]
 pkg-config
 xproto
+xtrans
 
 [main]
 filesize=323808
