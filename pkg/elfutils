@@ -24,7 +24,8 @@ CC="$CC -static" ./configure --prefix=/ \
     ac_cv_tls=no || exit 1
 find . -name Makefile -exec sed -i 's/-Werror//g' '{}' \;
 find . -name Makefile -exec sed -i 's/if readelf -d $@ | fgrep -q TEXTREL; then exit 1; fi$//' "{}" \;
-
+sed -i 's,am__EXEEXT_1 = libelf.so$(EXEEXT),,' libelf/Makefile
+sed -i 's,install: install-am libelf.so,install: install-am\n\nfoobar:\n,' libelf/Makefile
 hush -c 'make -C libelf -j$MAKE_THREADS' || exit 1
 hush -c 'make -C libelf install' || exit 1
 
