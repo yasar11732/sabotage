@@ -1,4 +1,5 @@
 [deps]
+pkg-config
 xproto
 
 [main]
