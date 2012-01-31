@@ -37,11 +37,18 @@ DO NOT RUN SCRIPTS YOU HAVE NOT READ.
 
 % . ./config       # required!
 
-% ./build-stage0   # build toolchain (~15min on a modern machine)
+% ./build-stage 0  # build toolchain (~15min on a modern machine)
 % ./enter-chroot   # enter $R chrooted, needs root password
 % cd /src
+% vi config        # set your MAKE_THREADS, etc
 % . config
 % butch install stage1
+% butch install xorg
+
+etc.. you can look around in /src/pkg to see which additional useful
+packages you can find... install them using butch, i.e.
+% butch install nano
+% butch install gdb
 
 copy $R to a ext4 file-system
 # extlinux -i $R/boot
