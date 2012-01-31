@@ -1,6 +1,7 @@
 [deps]
 ncurses
 patch
+binutils
 
 [main]
 filesize=20614020
