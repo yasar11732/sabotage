@@ -11,8 +11,9 @@ http://www.etalabs.net/musl/releases/musl-0.8.4.tar.gz
 [build]
 cp $K/musl.config.mak config.mak
 
-make CC=$R/bin/gcc -j$MAKE_THREADS || exit 1
-make install DESTDIR=$R || exit 1
-sed -i 's:libc_prefix=".*":libc_prefix="'$R'":' $R/bin/musl-gcc
 #we do not want anything in stage0 to be dynamically linked
-rm -f $R/lib/libc.so
+patch -p1 < $K/musl-makefile-static.patch
+
+make static CC=$R/bin/gcc -j$MAKE_THREADS || exit 1
+make install-static DESTDIR=$R || exit 1
+sed -i 's:libc_prefix=".*":libc_prefix="'$R'":' $R/bin/musl-gcc
