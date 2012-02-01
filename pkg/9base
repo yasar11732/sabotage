@@ -11,7 +11,7 @@ http://dl.suckless.org/tools/9base-6.tar.gz
 
 [build]
 echo "PREFIX = /" >>config.mk
-echo "CFLAGS += -D_GNU_SOURCE -DPLAN9PORT" >>config.mk
+echo "CFLAGS += -D_GNU_SOURCE -DPLAN9PORT -D__USE_MISC" >>config.mk
 
 sed -i 's/__linux__/__not_linux__/;s/__sun__/__linux__/' lib9/dirread.c
 sed -i '/sys.termios.h/d' lib9/readcons.c
