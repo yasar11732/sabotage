@@ -11,9 +11,12 @@ http://www.etalabs.net/musl/releases/musl-0.8.4.tar.gz
 [build]
 cp $K/musl.config.mak config.mak
 
-#we do not want anything in stage0 to be dynamically linked
+#disable building shared libs. the mere presence of libc.so messes up stuff.
+#we do not want anything in stage0 to be dynamically linked.
+echo "SHARED_LIBS =" >> config.mak
+
 patch -p1 < $K/musl-makefile-static.patch
 
-make static CC=$R/bin/gcc -j$MAKE_THREADS || exit 1
-make install-static DESTDIR=$R || exit 1
+make CC=$R/bin/gcc -j$MAKE_THREADS || exit 1
+make install DESTDIR=$R || exit 1
 sed -i 's:libc_prefix=".*":libc_prefix="'$R'":' $R/bin/musl-gcc
