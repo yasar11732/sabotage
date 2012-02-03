@@ -1,0 +1,40 @@
+[deps]
+musl
+
+[build]
+
+relocate() {
+	local dir=$1
+	local backlinks=$2
+	mkdir -p $R/$dir
+	cd $TC_PATH/$dir
+	echo XXX $TC_PATH/$dir
+	for i in * ; do
+		if [ -d "$i" ] ; then
+			relocate $dir/$i $backlinks/..
+		else
+			target=$R/$dir/$i
+			echo $target $R $dir $i
+			ln -sf $backlinks/opt/toolchain/$dir/$i $target
+		fi
+	done
+	echo YYY
+}
+
+TC_PATH=$R/opt/toolchain
+
+#make a link from gcc -> rawcc
+#we need that later for musl-gcc to become the default compiler.
+
+ln -sf gcc $TC_PATH/bin/rawcc
+
+relocate bin ..
+relocate lib ..
+relocate include ..
+relocate etc ..
+
+#we need to use the musl-gcc wrapper as default CC, so that it can include
+#-L/lib -I/include additionally to the the paths in /opt/toolchain.
+
+ln -sf musl-gcc $R/bin/gcc
+sed -i 's,gcc=gcc,gcc=rawcc,' $R/bin/musl-gcc

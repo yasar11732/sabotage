@@ -10,7 +10,31 @@ http://ftp.gnu.org/gnu/binutils/binutils-2.22.tar.bz2
 
 [build]
 patch -p1 < $K/binutils-arm.diff || exit 1
-CC="$CC -static -L$R/lib -I$R/include" ./configure --prefix=/ --disable-nls --disable-shared || exit 1
+
+#create directory structure for static toolchain
+TC_PATH=$R/opt/toolchain
+mkdir -p $TC_PATH
+SELF=`pwd`
+[ -z "$SELF" ] && exit 1
+
+if [[ ! -e $TC_PATH/usr ]] ; then
+        cd $TC_PATH
+        ln -sf . usr
+        cd $SELF
+fi
+
+
+CC="$CC -static -L$R/lib -I$R/include" ./configure \
+	--prefix=/ --disable-nls --disable-shared \
+	--with-build-sysroot=$R --with-sysroot=$TC_PATH \
+	|| exit 1
+
 echo "#define __pid_t int" >include/features.h
 make -j$MAKE_THREADS tooldir=$R || exit 1
-make tooldir=$R prefix=$R install
+make DESTDIR=$TC_PATH install || exit 1
+
+cd $TC_PATH/bin/
+rm -f ld
+ln -sf ld.bfd ld
+
+

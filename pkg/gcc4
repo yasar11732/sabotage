@@ -32,6 +32,16 @@ if [ x$A = xarm ] ; then
 	patch -p1 < $K/gcc-453-patch2.diff || exit 1
 fi
 
+#create directory structure for static toolchain
+TC_PATH=$R/opt/toolchain
+mkdir -p $TC_PATH
+SELF=`pwd`
+if [[ ! -e $TC_PATH/usr ]] ; then
+        cd $TC_PATH
+        ln -sf . usr
+        cd $SELF
+fi
+
 export CC="$CC -static -D_GNU_SOURCE -I$R/include -L$R/lib" 
 
 CFLAGS="-O0 -s" LDFLAGS="-Wl,--no-keep-memory" ./configure --with-newlib --with-headers=no --prefix=/ \
@@ -39,10 +49,29 @@ CFLAGS="-O0 -s" LDFLAGS="-Wl,--no-keep-memory" ./configure --with-newlib --with-
   --disable-libmudflap --disable-libssp --disable-libgomp \
   --disable-debug --disable-bootstrap \
   --enable-lto --with-system-zlib \
+  --with-build-sysroot=/ --with-sysroot=$TC_PATH \
   --with-target-libiberty=no --with-target-zlib=no \
-  --libdir=/lib --libexecdir=/lib --mandir=/share/man --infodir=/share/info || exit 1
+  || exit 1
 
 make -j$MAKE_THREADS BOOT_LDFLAGS="-static" LDFLAGS="-static" || exit 1
-make -j1 DESTDIR=$R install || exit 1
-ln -sf gcc $R/bin/cc
-[ "$A" = x86_64 ] && mv $R/lib64/libgcc* $R/lib || true
+make -j1 DESTDIR=$TC_PATH install || exit 1
+
+#create a host_tuple dummy entry, so binutils stuff will get into /bin, etc
+lib_gcc=`$TC_PATH/bin/gcc -print-libgcc-file-name`
+lib_gcc_minus_filename=`echo $lib_gcc | sed 's,4\.5\.3.*,,'`
+host_tuple=`basename $lib_gcc_minus_filename`
+echo host tuple is $host_tuple
+
+if [[ ! -e ${TC_PATH}/${host_tuple} ]] ; then
+        cd $TC_PATH
+        ln -sf . ${host_tuple}
+        cd $SELF
+fi
+
+#remove gcc's stddef.h which is not compatible
+rm $TC_PATH/lib/gcc/$host_tuple/4.5.3/include/stddef.h
+
+#add a link to "cc"
+ln -sf gcc $TC_PATH/bin/cc 
+
+[ "$A" = x86_64 ] && mv $TC_PATH/lib64/libgcc* $TC_PATH/lib/ || true

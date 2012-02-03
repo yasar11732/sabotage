@@ -18,6 +18,7 @@ mpfr
 musl
 openssl
 pkg-config
+relocate_toolchain
 sed
 xz
 zlib

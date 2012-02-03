@@ -1,5 +1,6 @@
 [deps]
 gcc4
+relocate_toolchain
 
 [main]
 filesize=1242186

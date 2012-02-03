@@ -1,7 +1,6 @@
 [deps]
 gcc4
 binutils
-make
 
 [main]
 filesize=504356
@@ -11,8 +10,30 @@ sha512=a13af13f4752eb94f0df1d34045f6053b9005556ff4e43d1eecb58d807d2dcdd294840f09
 http://www.etalabs.net/musl/releases/musl-0.8.4.tar.gz
 
 [build]
+patch -p1 < $K/musl-0_8_4-musl-gcc-fixes.patch
+
 cp $K/musl.config.mak config.mak
+
+#create directory structure for static toolchain
+TC_PATH=$R/opt/toolchain
+mkdir -p $TC_PATH
+SELF=`pwd`
+[ -z "$SELF" ] && exit 1
+
+if [[ ! -e $TC_PATH/usr ]] ; then
+        cd $TC_PATH
+        ln -sf . usr
+        cd $SELF
+fi
 
 make clean
 make CC=$R/bin/gcc -j$MAKE_THREADS
-make install
+make DESTDIR=$TC_PATH install
+
+#remove dependency on libgcc_eh, which doesnt get built
+#when gcc is built using --disable-shared
+sed -i 's,-lgcc_eh ,,' $TC_PATH/bin/musl-gcc
+
+#-std=gnu99 breaks stuff which expects specific inline behaviour
+#its not even needed so lets get rid of it
+sed -i 's,-std=gnu99,,' $TC_PATH/bin/musl-gcc
