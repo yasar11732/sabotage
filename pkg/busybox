@@ -14,7 +14,13 @@ http://www.busybox.net/downloads/busybox-1.19.2.tar.bz2
 cp $K/busybox.stage1.config .config
 patch -p1 <$K/busybox.patch || exit 1
 patch -p1 <$K/busybox-patch.patch || exit 1
-make HOSTCFLAGS=-D_GNU_SOURCE -j$MAKE_THREADS || exit 1
+
+#__inline seems to get activated when -std=gnu99 is used, causing havoc 
+sed -i 's,__inline,,' ./scripts/kconfig/zconf.hash.c_shipped
+
+make KBUILD_VERBOSE=1 CC="$CC" HOSTCC="$HOSTCC" \
+     HOSTCFLAGS=-D_GNU_SOURCE -j$MAKE_THREADS || exit 1
+
 cp busybox $R/bin
 cd $R/bin
 for f in $(./busybox --list); do
