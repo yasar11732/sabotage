@@ -1,0 +1,20 @@
+--- musl-0.8.4/src/internal/libc.c
++++ musl-0.8.4-patched/src/internal/libc.c
+@@ -8,4 +8,6 @@
+ }
+ #else
+ struct __libc __libc;
++__asm__(".hidden __libc");
++//struct __libc __libc;
+ #endif
+--- musl-0.8.4/src/multibyte/mbrtowc.c
++++ musl-0.8.4-patched/src/multibyte/mbrtowc.c
+@@ -10,7 +10,7 @@
+ #include <errno.h>
+ 
+ #include "internal.h"
+-
++__asm(".hidden __fsmu8");
+ size_t mbrtowc(wchar_t *wc, const char *src, size_t n, mbstate_t *st)
+ {
+ 	static unsigned internal_state;
