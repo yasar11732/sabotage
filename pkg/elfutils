@@ -6,6 +6,9 @@ sha512=e680c3ae4270b517bbd27de0d3aa3885bbbc935cc716cdddf45a2adb4a1ad5019a791d563
 
 [mirrors]
 http://fedorahosted.org/releases/e/l/elfutils/0.152/elfutils-0.152.tar.bz2
+http://dbg.download.sourcemage.org/mirror/elfutils-0.152.tar.bz2
+http://distfiles.exherbo.org/distfiles/elfutils-0.152.tar.bz2
+http://ftp.sh.cvut.cz/MIRRORS/sourcemage/mirror/elfutils-0.152.tar.bz2
 
 [build]
 patch -Np1 -i $K/elfutils-portability.patch || exit 1
