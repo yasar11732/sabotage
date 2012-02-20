@@ -1,25 +1,45 @@
-#!/bin/bash
-stage=$1
-if [ -z "$stage" ] ; then
-	echo "error, pass either 0 or 1 as first argument!"
-	echo "will build the according stage."
+#!/bin/sh
+
+if [ "$1" != "0" -a "$1" != "1" ]; then
+    cat <<EOF >&2
+error: unknown stage: $1
+usage: $0 [stage]
+  stage is either 0 or 1
+EOF
+exit 1
 fi
 
+# H for home, where we started
+export H="$PWD"
+stage="stage$1"
+
+if [ ! -r "$H"/config ]; then
+    printf -- "couldn't read configuration file: %s\n" "$H/config"
+    printf -- "try copying %s as %s\n" "$K/config.$stage" "$H/config"
+    exit 1
+fi
+
+# enable verbose printing, abord on error
 set -e -x
-export H=$(pwd)
 
-. $H/config
-. $H/utils/utils
-. $H/utils/prepare-root
-. $H/utils/build-butch
+. "$H"/config
+mkdir -p "$K" "$C" "$S" "$R" "$LOGPATH"
 
-mkdir -p $S/logs
+. "$H"/utils/utils
+. "$H"/utils/prepare-rootfs
+. "$H"/utils/build-butch
 
-#remove installed.dat, so installation starts all over
-#stage0 can be continued manually via $/butch.out install stage0
-#in case the build failed or was interrupted.
-rm -f $S/pkg/installed.dat
+# NOTE
+# installation starts all over if installed.dat is not there.
+# to manually continue a stage0 build, run
+#     $S/butch.bin install stage0
+# in case the build failed or was interrupted.
+rm -f "$S"/pkg/installed.dat
 
-$H/utils/update-buildroot
-$S/butch.bin install stage$stage
+# update-buildroot - copy to sources
+cp -r "$H"/pkg "$S"/
+cp -r "$H"/KEEP "$S"/
+
+# build the thing
+"$S"/butch.bin install "$stage"
 
