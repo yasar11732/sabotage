@@ -1,21 +1,10 @@
 #!/bin/sh
 
-if [ "$1" != "0" -a "$1" != "1" ]; then
-    cat <<EOF >&2
-error: unknown stage: $1
-usage: $0 [stage]
-  stage is either 0 or 1
-EOF
-exit 1
-fi
-
-# H for home, where we started
 export H="$PWD"
-stage="stage$1"
 
 if [ ! -r "$H"/config ]; then
     printf -- "couldn't read configuration file: %s\n" "$H/config"
-    printf -- "try copying %s as %s\n" "$K/config.$stage" "$H/config"
+    printf -- "copy %s to %s and edit appropriately\n" "$K/config.stage0" "$H/config"
     exit 1
 fi
 
@@ -41,5 +30,5 @@ cp -r "$H"/pkg "$S"/
 cp -r "$H"/KEEP "$S"/
 
 # build the thing
-"$S"/butch.bin install "$stage"
+"$S"/butch.bin install stage0
 
