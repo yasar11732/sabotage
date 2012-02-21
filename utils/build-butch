@@ -22,7 +22,8 @@ if [ "$sha" != "$sha512" ]; then
     exit 1
 fi
 
-patch -p1 < "$K"/butch-0.0.4-fix-wget.patch
+patch -p1 < "$K"/butch-0.0.4-fix-wget.patch || exit 1
+patch -p1 < "$K"/butch-0.0.4-fix-wget_b.patch || exit 1
 
 ./build.sh
 cp butch/butch "$S"/butch.bin
