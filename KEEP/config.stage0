@@ -1,13 +1,14 @@
 ## set paths
 # K is the directory where patches and configs are kept
-# T is the directory to place the downloaded tarbars
-# S is the directory to extract tarbars and place sources for building
+# C is the directory to place the downloaded tarballs
+# S is the directory to extract tarballs and place sources for building stage0
 # R is the directory underwhich the new filesystem will be created
 # LOGPATH is the directory to place logfiles of builds
 export K="$PWD/KEEP"
-export T="$PWD/tarballs"
-export S="/tmp/sabotage/src"
-export R="/tmp/sabotage/root"
+export C="$PWD/tarballs"
+export SABOTAGE_BUILDDIR="/tmp/sabotage"
+export S="$SABOTAGE_BUILDDIR"/src
+export R="$SABOTAGE_BUILDDIR"/root
 export LOGPATH="$S/logs"
 
 ## set your arch, or try `uname -m`
@@ -20,6 +21,7 @@ export CC=gcc
 export HOSTCC=gcc
 #export CROSS_COMPILE=armv6l
 
-## set your core count for faster builds
+## set your core count for faster builds, this is passed as -jXXX to make
+## stage0 builds in less than 2minutes using -j9 on an AMD 8core
 export MAKE_THREADS=1
 
