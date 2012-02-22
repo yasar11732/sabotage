@@ -7,6 +7,10 @@ sha512=f812ab3049fc2920a8da4649f6e60340ac365d58a0e76ace5219426aeb0759c0a474cfb2b
 
 [mirrors]
 http://zlib.net/zlib-1.2.6.tar.gz
+http://ftp.fifi.org/ImageMagick/delegates/zlib-1.2.6.tar.gz
+http://gentoo.netnitco.net/distfiles/zlib-1.2.6.tar.gz
+http://gentoo.tiscali.nl/distfiles/zlib-1.2.6.tar.gz
+http://prdownloads.sourceforge.net/libpng/zlib-1.2.6.tar.gz
 
 [build]
 ./configure --prefix=/
