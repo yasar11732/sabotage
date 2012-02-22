@@ -1,10 +1,10 @@
 #!/bin/sh
 
-tarxf https://github.com/downloads/rofl0r/butch/ butch-0.0.5 .tar.bz2 butch
-filesize='58819'
-sha512='59fb701684cfed02a6e9e10fd8a0e708388c4ec204e585aa065f704e9fbf8ccf23e80c816eb53eaba308f7f81bbb745c4ee92eb5d6fc46fe712f58d11c20f345'
+tarxf https://github.com/downloads/rofl0r/butch/ butch-0.0.6 .tar.bz2 butch
+filesize='58830'
+sha512='53108559b97b6e8d0433b947fccd397c49e3cd84fe08ee64c553b73fd71a595c09c411d4950079230d487433a99081ab4cfb1d20f3f996b3c7070020a6f8217f'
 
-filename="$S"/butch-0.0.5.tar.bz2
+filename="$S"/butch-0.0.6.tar.bz2
 
 read sz _ <<EOF
 $(du -b "$filename")
