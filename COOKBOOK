@@ -48,20 +48,22 @@ Now reboot into your freshly installed Sabotage system!
 
 == Butch, the build manager
 
-butch is a 500 LOC C program written from scratch, which handles the package download,
-checksum comparison, build process, and dependencies in a relatively sane manner.
+  butch is a 700 LOC C program written from scratch, which handles the package download,
+  checksum comparison, build process, and dependencies in a relatively sane manner.
 
-it suports the following commands
-butch install <(meta)package> <(meta)package> <(meta)package> ...
-butch rebuild <(meta)package> <(meta)package> <(meta)package> ...
-butch download <(meta)package> <(meta)package> <(meta)package> ...
+  it suports the following commands
 
-currently butch will start up to 16 download threads and up to 2 build threads.
-since busybox' wget (used inside the chroot) has a number of issues, 
-it is advised to download all packages at once before starting the build process.
+    butch install <(meta)package> <(meta)package> <(meta)package> ...
+    butch rebuild <(meta)package> <(meta)package> <(meta)package> ...
+    butch prefetch <(meta)package> <(meta)package> <(meta)package> ...
 
-this can be achieved by issuing
-butch download stage0 stage1 pkg xorg gdb
+  currently butch will start up to 16 download threads and up to 2 build threads.
+  since busybox' wget (used inside the chroot) has a number of issues, 
+  it is advised to download all packages at once before starting the build process.
+
+  this can be achieved by issuing
+
+    butch prefetch stage0 stage1 pkg xorg gdb
 
 
 == Bootstrapping the system
