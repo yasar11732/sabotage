@@ -1,16 +1,14 @@
 [main]
-filesize=58248
-sha512=710ba50379756bf77c692da68ae741f6bbc4af84c204bfd0eec09ee6fa762132825d8c1a3e62d96073d9a8c1c5906323b6aae50ed0d8601859e545c105555b5b
+filesize=58819
+sha512=59fb701684cfed02a6e9e10fd8a0e708388c4ec204e585aa065f704e9fbf8ccf23e80c816eb53eaba308f7f81bbb745c4ee92eb5d6fc46fe712f58d11c20f345
 tardir=butch
 
 [deps]
 stage0_musl
 
 [mirrors]
-https://github.com/downloads/rofl0r/butch/butch-0.0.4.tar.bz2
+https://github.com/downloads/rofl0r/butch/butch-0.0.5.tar.bz2
 
 [build]
-patch -p1 < "$K"/butch-0.0.4-fix-wget.patch || exit 1
-patch -p1 < "$K"/butch-0.0.4-fix-wget_b.patch || exit 1
 CC="$R/bin/musl-gcc -static" ./build.sh
 cp butch/butch $R/bin/butch
