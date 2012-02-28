@@ -1,6 +1,6 @@
 --- gcc-4.5.3/configure
 +++ gcc-patched/configure
-@@ -3006,6 +3006,16 @@
+@@ -3006,6 +3006,21 @@
  # Noconfigdirs are removed loudly.
  noconfigdirs=""
  
@@ -12,6 +12,11 @@
 +# Make sure we don't let target-zlib be added if we didn't want it.
 +if test x$with_target_zlib = xno ; then
 +  noconfigdirs="$noconfigdirs target-zlib"
++fi
++
++# Make sure we don't let target-libstdc++ be added if we didn't want it.
++if test x$with_target_libstdcxx = xno ; then
++  noconfigdirs="$noconfigdirs target-libstdc++-v3"
 +fi
 +
  use_gnu_ld=
@@ -19,7 +24,7 @@
  if test x$with_gnu_ld = xno ; then
 --- gcc-4.5.3/configure.ac
 +++ gcc-patched/configure.ac
-@@ -252,6 +252,16 @@
+@@ -252,6 +252,21 @@
  # Noconfigdirs are removed loudly.
  noconfigdirs=""
  
@@ -31,6 +36,11 @@
 +# Make sure we don't let target-zlib be added if we didn't want it.
 +if test x$with_target_zlib = xno ; then
 +  noconfigdirs="$noconfigdirs target-zlib"
++fi
++
++# Make sure we don't let target-libstdc++ be added if we didn't want it.
++if test x$with_target_libstdcxx = xno ; then
++  noconfigdirs="$noconfigdirs target-libstdc++-v3"
 +fi
 +
  use_gnu_ld=
