@@ -1,0 +1,13 @@
+[main]
+filesize=6475820
+sha512=7b84a57080befa90dc811f0c90efe70774886d33483694f4eb888b65b510c5c5663cdace88b1d0bd96336b4d59c9910a27acae1432821c451fa05b244224f240
+
+[mirrors]
+ftp://gd.tuwien.ac.at/gnu/gcc/releases/gcc-4.5.3/gcc-g++-4.5.3.tar.bz2
+http://gcc.cybermirror.org//releases/gcc-4.5.3/gcc-g++-4.5.3.tar.bz2
+http://gcc-uk.internet.bs/releases/gcc-4.5.3/gcc-g++-4.5.3.tar.bz2
+http://www.netgull.com/gcc/releases/gcc-4.5.3/gcc-g++-4.5.3.tar.bz2
+
+[build]
+true
+

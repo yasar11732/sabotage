@@ -7,6 +7,8 @@ mpfr
 mpc
 zlib
 elfutils
+g++
+binutils
 
 [main]
 filesize=28252641
@@ -17,6 +19,25 @@ tardir=gcc-4.5.3
 http://ftpmirror.gnu.org/gcc/gcc-4.5.3/gcc-core-4.5.3.tar.bz2
 
 [build]
+# we're doing a bit of hack to place the g++ contents in this folder
+# the build system isnt really laid out for extracting multiple tarballs into
+# the same dir...
+
+dir=$PWD
+cd ..
+tar xf $C/gcc-g++-4.5.3.tar.bz2
+cd $dir
+#more g++ hackery
+sed -i 's,# include <syscall.h>,#include <sys/syscall.h>,' ./libstdc++-v3/libsupc++/guard.cc
+#sed -i 's,# define _GLIBCXX_USE_FUTEX,,' ./libstdc++-v3/libsupc++/guard.cc
+
+#todo check if this isnt to intrusive
+sed -i 's,gcc_no_link=yes,gcc_no_link=no,' ./libstdc++-v3/configure
+
+#and even more g++ hackery
+mv ./libstdc\+\+-v3/config/os/gnu-linux ./libstdc\+\+-v3/config/os/gnu-linux.org
+cp -r ./libstdc\+\+-v3/config/os/generic ./libstdc\+\+-v3/config/os/gnu-linux
+#g++ hackery done
 
 sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
 
@@ -51,7 +72,13 @@ CFLAGS="-O0 -s" LDFLAGS="-Wl,--no-keep-memory" ./configure --with-newlib --with-
   --enable-lto --with-system-zlib \
   --with-build-sysroot=/ --with-sysroot=$TC_PATH \
   --with-target-libiberty=no --with-target-zlib=no \
+  --enable-languages=c,c++ --enable-clocale=generic \
+  LD_FOR_TARGET=$TC_PATH/bin/ld \
   || exit 1
+
+#  --disable-hosted-libstdcxx --with-target-libstdcxx=no \
+#we use LD_FOR_TARGET, since the bootstrapped xgcc depends on a linker with sysroot                             
+
 
 make -j$MAKE_THREADS BOOT_LDFLAGS="-static" LDFLAGS="-static" || exit 1
 make -j1 DESTDIR=$TC_PATH install || exit 1
