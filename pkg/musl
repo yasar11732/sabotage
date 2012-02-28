@@ -3,16 +3,15 @@ gcc4
 binutils
 
 [main]
-filesize=504356
-sha512=a13af13f4752eb94f0df1d34045f6053b9005556ff4e43d1eecb58d807d2dcdd294840f090a41c33b75ccea48b0e7f7f11325e6083b4196165d407d6bafd451c
+filesize=508135
+sha512=d6d144ac33174fd6b6f49069ddb17bf1aeef4b8e5bb6759935a8982281afa79f00a9e37f7e7580eabc8114efeca01eba47778aa3bffc7a2c3d27a90474fc3033
 
 [mirrors]
-http://www.etalabs.net/musl/releases/musl-0.8.4.tar.gz
+http://www.etalabs.net/musl/releases/musl-0.8.6.tar.gz
 
 [build]
-patch -p1 < $K/musl-0_8_4-musl-gcc-fixes.patch
-
 cp $K/musl.config.mak config.mak
+cp $K/wcsftime.c src/multibyte/
 
 #create directory structure for static toolchain
 TC_PATH=$R/opt/toolchain
@@ -33,7 +32,3 @@ make DESTDIR=$TC_PATH install
 #remove dependency on libgcc_eh, which doesnt get built
 #when gcc is built using --disable-shared
 sed -i 's,-lgcc_eh ,,' $TC_PATH/bin/musl-gcc
-
-#-std=gnu99 breaks stuff which expects specific inline behaviour
-#its not even needed so lets get rid of it
-sed -i 's,-std=gnu99,,' $TC_PATH/bin/musl-gcc

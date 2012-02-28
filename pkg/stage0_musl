@@ -1,21 +1,20 @@
 [main]
-filesize=504356
-sha512=a13af13f4752eb94f0df1d34045f6053b9005556ff4e43d1eecb58d807d2dcdd294840f090a41c33b75ccea48b0e7f7f11325e6083b4196165d407d6bafd451c
+filesize=508135
+sha512=d6d144ac33174fd6b6f49069ddb17bf1aeef4b8e5bb6759935a8982281afa79f00a9e37f7e7580eabc8114efeca01eba47778aa3bffc7a2c3d27a90474fc3033
 
 [deps]
 stage0_gcc3
 
 [mirrors]
-http://www.etalabs.net/musl/releases/musl-0.8.4.tar.gz
+http://www.etalabs.net/musl/releases/musl-0.8.6.tar.gz
 
 [build]
 cp $K/musl.config.mak config.mak
+cp $K/wcsftime.c src/multibyte/
 
 #disable building shared libs. the mere presence of libc.so messes up stuff.
 #we do not want anything in stage0 to be dynamically linked.
 echo "SHARED_LIBS =" >> config.mak
-
-patch -p1 < $K/musl-makefile-static.patch
 
 make CC=$R/bin/gcc -j$MAKE_THREADS || exit 1
 make install DESTDIR=$R || exit 1
