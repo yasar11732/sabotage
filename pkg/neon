@@ -1,6 +1,7 @@
 [deps]
 musl
 pkg-config
+openssl-dynamic
 expat
 
 [main]
@@ -11,7 +12,7 @@ sha512=26424f30936170a28fdb0188e10985c2b0e1e4266c4c1832384a02b69828741eb13700156
 http://www.webdav.org/neon/neon-0.29.6.tar.gz
 
 [build]
-./configure --prefix=/ || exit 1
+./configure --prefix=/ --with-ssl=openssl --enable-shared=yes || exit 1
 make -j$MAKE_THREADS || exit 1
 make install || exit 1
 

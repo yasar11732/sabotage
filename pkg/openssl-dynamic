@@ -1,0 +1,26 @@
+[deps]
+openssl
+zlib-dynamic
+perl
+
+[main]
+filesize=4025484
+sha512=c273e884ad8d342c334c3a25dc63a790061e23e0df0c240e57c09535f49ce3da0d061792473b6953ca06c9e868832e108935ceb9512381cff1e4a58e7$
+
+[mirrors]
+http://www.openssl.org/source/openssl-1.0.0d.tar.gz
+
+[build]
+
+sed -i '/^"linux-x86_64/s/-DTERMIO/-DTERMIOS/' Configure
+sed -i '/^"linux-elf/s/-DTERMIO/-DTERMIOS/' Configure
+sed -i 's/defined(linux)/0/' crypto/ui/ui_openssl.c
+./config --prefix=/ --openssldir=/etc/ssl --libdir=lib no-dso zlib enable-md2 -Wa,--noexecstack -fPIC
+touch include/memory.h
+make -j1 depend || exit 1
+make -j1 all || exit 1
+make -j1 build-shared || exit 1
+# we do not want the .a files compiled with -fPIC so we only copy the *.so's
+#make -j1 INSTALL_PREFIX=$R MANDIR=/share/man install
+cp -f *.so* /lib
+
