@@ -1,0 +1,21 @@
+[deps]
+musl
+pkg-config
+apr
+apr-util
+zlib-dynamic
+
+[main]
+filesize=5956842
+sha512=6f28157a2b6587c18a7ed3a61a4929a54488ef31325a4d96d2343123bf6a47adc7c1ca83a388dd384651beb086ad86ff7faf8181880d4c482fc05ddbce2bda6d
+
+[mirrors]
+http://mirror.switch.ch/mirror/apache/dist/subversion/subversion-1.7.3.tar.bz2
+http://www.eu.apache.org/dist/subversion/subversion-1.7.3.tar.bz2
+http://www.apache.org/dist/subversion/subversion-1.7.3.tar.bz2
+
+[build]
+./configure --prefix=/ || exit 1
+make -j$MAKE_THREADS || exit 1
+make install || exit 1
+

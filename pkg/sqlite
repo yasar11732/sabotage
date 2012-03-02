@@ -1,0 +1,17 @@
+[deps]
+musl
+pkg-config
+
+[main]
+filesize=1801640
+sha512=b66ca1eb59eec97415d110879077c0c7cac24e79cdd1f98143cfaa663d5c08888bc243ac3c10efe36e1c9c15b4fb9d661882e0e80c24f2b86bf385f81e058120
+
+[mirrors]
+http://sqlite.org/sqlite-autoconf-3071000.tar.gz
+
+[build]
+./configure --prefix=/ || exit 1
+make -j$MAKE_THREADS || exit 1
+make install || exit 1
+
+
