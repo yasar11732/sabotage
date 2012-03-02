@@ -4,6 +4,7 @@ pkg-config
 apr
 apr-util
 zlib-dynamic
+neon
 
 [main]
 filesize=5956842
