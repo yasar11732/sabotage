@@ -1,0 +1,25 @@
+From b4a07bb469ad5a81ee003b621c362d2e7be38159 Mon Sep 17 00:00:00 2001
+From: Rich Felker <dalias@aerifal.cx>
+Date: Fri, 2 Mar 2012 12:48:17 -0500
+Subject: [PATCH] fix obscure bug in strtoull reading the highest 16 possible values
+
+---
+ src/internal/intparse.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/src/internal/intparse.c b/src/internal/intparse.c
+index 90aa833..ffd06fe 100644
+--- a/src/internal/intparse.c
++++ b/src/internal/intparse.c
+@@ -87,7 +87,7 @@ int __intparse(struct intparse *v, const void *buf, size_t n)
+ 			v->val = v->val * b + d;
+ 		if (!n) return 1;
+ 		if (d >= b) goto finished;
+-		if (v->val < (UINTMAX_MAX-d)/b)
++		if (v->val <= (UINTMAX_MAX-d)/b)
+ 			v->val = v->val * b + d;
+ 		else
+ 			v->err = ERANGE;
+-- 
+1.7.3.2
+

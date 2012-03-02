@@ -1,0 +1,218 @@
+From e0614f7cd418afedd06c9bcd5abb965608bc52f8 Mon Sep 17 00:00:00 2001
+From: Rich Felker <dalias@aerifal.cx>
+Date: Thu, 1 Mar 2012 23:24:45 -0500
+Subject: [PATCH] add all missing wchar functions except floating point parsers
+
+these are mostly untested and adapted directly from corresponding byte
+string functions and similar.
+---
+ include/wchar.h            |   15 +++++++++++++++
+ src/locale/wcscoll_l.c     |    6 ++++++
+ src/locale/wcsxfrm_l.c     |    6 ++++++
+ src/string/wcpcpy.c        |    6 ++++++
+ src/string/wcpncpy.c       |    6 ++++++
+ src/string/wcscasecmp.c    |    7 +++++++
+ src/string/wcscasecmp_l.c  |    6 ++++++
+ src/string/wcsdup.c        |   11 +++++++++++
+ src/string/wcsncasecmp.c   |    9 +++++++++
+ src/string/wcsncasecmp_l.c |    6 ++++++
+ src/string/wcsnlen.c       |    8 ++++++++
+ src/string/wcstok.c        |   12 ++++++++++++
+ 12 files changed, 98 insertions(+), 0 deletions(-)
+ create mode 100644 src/locale/wcscoll_l.c
+ create mode 100644 src/locale/wcsxfrm_l.c
+ create mode 100644 src/string/wcpcpy.c
+ create mode 100644 src/string/wcpncpy.c
+ create mode 100644 src/string/wcscasecmp.c
+ create mode 100644 src/string/wcscasecmp_l.c
+ create mode 100644 src/string/wcsdup.c
+ create mode 100644 src/string/wcsncasecmp.c
+ create mode 100644 src/string/wcsncasecmp_l.c
+ create mode 100644 src/string/wcsnlen.c
+ create mode 100644 src/string/wcstok.c
+
+diff --git a/include/wchar.h b/include/wchar.h
+index 87e244a..12ddd4f 100644
+--- a/include/wchar.h
++++ b/include/wchar.h
+@@ -11,6 +11,11 @@ extern "C" {
+ #define __NEED_wchar_t
+ #define __NEED_wint_t
+ 
++#if defined(_POSIX_SOURCE) || defined(_POSIX_C_SOURCE) \
++ || defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE)
++#define __NEED_locale_t
++#endif
++
+ #if defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE)
+ #define __NEED_wctype_t
+ #endif
+@@ -132,6 +137,16 @@ size_t wcsftime (wchar_t *, size_t, const wchar_t *, const struct tm *);
+ FILE *open_wmemstream(wchar_t **, size_t *);
+ size_t mbsnrtowcs(wchar_t *, const char **, size_t, size_t, mbstate_t *);
+ size_t wcsnrtombs(char *, const wchar_t **, size_t, size_t, mbstate_t *);
++wchar_t *wcsdup(const wchar_t *);
++size_t wcsnlen (const wchar_t *, size_t);
++wchar_t *wcpcpy (wchar_t *, const wchar_t *);
++wchar_t *wcpncpy (wchar_t *, const wchar_t *, size_t);
++int wcscasecmp(const wchar_t *, const wchar_t *);
++int wcscasecmp_l(const wchar_t *, const wchar_t *, locale_t);
++int wcsncasecmp(const wchar_t *, const wchar_t *, size_t);
++int wcsncasecmp_l(const wchar_t *, const wchar_t *, size_t, locale_t);
++int wcscoll_l(const wchar_t *, const wchar_t *, locale_t);
++size_t wcsxfrm_l(wchar_t *, const wchar_t *, size_t n, locale_t);
+ #endif
+ 
+ #if defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE)
+diff --git a/src/locale/wcscoll_l.c b/src/locale/wcscoll_l.c
+new file mode 100644
+index 0000000..f257ec8
+--- /dev/null
++++ b/src/locale/wcscoll_l.c
+@@ -0,0 +1,6 @@
++#include <wchar.h>
++
++int wcscoll_l(const wchar_t *l, const wchar_t *r, locale_t locale)
++{
++	return wcscoll(l, r);
++}
+diff --git a/src/locale/wcsxfrm_l.c b/src/locale/wcsxfrm_l.c
+new file mode 100644
+index 0000000..831998e
+--- /dev/null
++++ b/src/locale/wcsxfrm_l.c
+@@ -0,0 +1,6 @@
++#include <wchar.h>
++
++size_t wcsxfrm_l(wchar_t *dest, const wchar_t *src, size_t n, locale_t locale)
++{
++	return wcsxfrm(dest, src, n);
++}
+diff --git a/src/string/wcpcpy.c b/src/string/wcpcpy.c
+new file mode 100644
+index 0000000..fdf878f
+--- /dev/null
++++ b/src/string/wcpcpy.c
+@@ -0,0 +1,6 @@
++#include <wchar.h>
++
++wchar_t *wcpcpy(wchar_t *d, const wchar_t *s)
++{
++	return wcscpy(d, s) + wcslen(s);
++}
+diff --git a/src/string/wcpncpy.c b/src/string/wcpncpy.c
+new file mode 100644
+index 0000000..aef8096
+--- /dev/null
++++ b/src/string/wcpncpy.c
+@@ -0,0 +1,6 @@
++#include <wchar.h>
++
++wchar_t *wcpncpy(wchar_t *d, const wchar_t *s, size_t n)
++{
++	return wcsncpy(d, s, n) + wcsnlen(s, n);
++}
+diff --git a/src/string/wcscasecmp.c b/src/string/wcscasecmp.c
+new file mode 100644
+index 0000000..3edeec7
+--- /dev/null
++++ b/src/string/wcscasecmp.c
+@@ -0,0 +1,7 @@
++#include <wchar.h>
++#include <wctype.h>
++
++int wcscasecmp(const wchar_t *l, const wchar_t *r)
++{
++	return wcsncasecmp(l, r, -1);
++}
+diff --git a/src/string/wcscasecmp_l.c b/src/string/wcscasecmp_l.c
+new file mode 100644
+index 0000000..065dd0a
+--- /dev/null
++++ b/src/string/wcscasecmp_l.c
+@@ -0,0 +1,6 @@
++#include <wchar.h>
++
++int wcscasecmp_l(const wchar_t *l, const wchar_t *r, locale_t locale)
++{
++	return wcscasecmp(l, r);
++}
+diff --git a/src/string/wcsdup.c b/src/string/wcsdup.c
+new file mode 100644
+index 0000000..dd49c1b
+--- /dev/null
++++ b/src/string/wcsdup.c
+@@ -0,0 +1,11 @@
++#include <stdlib.h>
++#include <wchar.h>
++#include "libc.h"
++
++wchar_t *wcsdup(const wchar_t *s)
++{
++	size_t l = wcslen(s);
++	wchar_t *d = malloc((l+1)*sizeof(wchar_t));
++	if (!d) return NULL;
++	return wmemcpy(d, s, l+1);
++}
+diff --git a/src/string/wcsncasecmp.c b/src/string/wcsncasecmp.c
+new file mode 100644
+index 0000000..8fefe79
+--- /dev/null
++++ b/src/string/wcsncasecmp.c
+@@ -0,0 +1,9 @@
++#include <wchar.h>
++#include <wctype.h>
++
++int wcsncasecmp(const wchar_t *l, const wchar_t *r, size_t n)
++{
++	if (!n--) return 0;
++	for (; *l && *r && n && (*l == *r || towlower(*l) == towlower(*r)); l++, r++, n--);
++	return towlower(*l) - towlower(*r);
++}
+diff --git a/src/string/wcsncasecmp_l.c b/src/string/wcsncasecmp_l.c
+new file mode 100644
+index 0000000..6387248
+--- /dev/null
++++ b/src/string/wcsncasecmp_l.c
+@@ -0,0 +1,6 @@
++#include <wchar.h>
++
++int wcsncasecmp_l(const wchar_t *l, const wchar_t *r, size_t n, locale_t locale)
++{
++	return wcsncasecmp(l, r, n);
++}
+diff --git a/src/string/wcsnlen.c b/src/string/wcsnlen.c
+new file mode 100644
+index 0000000..a776337
+--- /dev/null
++++ b/src/string/wcsnlen.c
+@@ -0,0 +1,8 @@
++#include <wchar.h>
++
++size_t wcsnlen(const wchar_t *s, size_t n)
++{
++	const wchar_t *z = wmemchr(s, 0, n);
++	if (z) n = z-s;
++	return n;
++}
+diff --git a/src/string/wcstok.c b/src/string/wcstok.c
+new file mode 100644
+index 0000000..c932d0a
+--- /dev/null
++++ b/src/string/wcstok.c
+@@ -0,0 +1,12 @@
++#include <wchar.h>
++
++wchar_t *wcstok(wchar_t *s, const wchar_t *sep, wchar_t **p)
++{
++	if (!s && !(s = *p)) return NULL;
++	s += wcsspn(s, sep);
++	if (!*s) return *p = 0;
++	*p = s + wcscspn(s, sep);
++	if (**p) *(*p)++ = 0;
++	else *p = 0;
++	return s;
++}
+-- 
+1.7.3.2
+

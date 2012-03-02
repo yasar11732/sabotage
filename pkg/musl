@@ -13,6 +13,9 @@ http://www.etalabs.net/musl/releases/musl-0.8.6.tar.gz
 cp $K/musl.config.mak config.mak
 cp $K/wcsftime.c src/multibyte/
 
+patch -p1 < $K/musl-0.8.6-intparse.patch || exit 1
+patch -p1 < $K/musl-0.8.6-wcsfuncs.patch || exit 1
+
 #create directory structure for static toolchain
 TC_PATH=$R/opt/toolchain
 mkdir -p $TC_PATH
