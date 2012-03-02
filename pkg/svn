@@ -5,6 +5,7 @@ apr
 apr-util
 zlib-dynamic
 neon
+sqlite
 
 [main]
 filesize=5956842
