@@ -1,16 +1,18 @@
 [main]
-filesize=508135
-sha512=d6d144ac33174fd6b6f49069ddb17bf1aeef4b8e5bb6759935a8982281afa79f00a9e37f7e7580eabc8114efeca01eba47778aa3bffc7a2c3d27a90474fc3033
+filesize=629680
+sha512=559f6df4e642254b19f572163090ce66b216182a708615c111d9e60d6326f8ee350afb809930b666e4f6f20cd6b70c1e71744628a99d32fe07ec57a829da6360
 
 [deps]
 stage0_gcc3
 
 [mirrors]
-http://www.etalabs.net/musl/releases/musl-0.8.6.tar.gz
+http://www.etalabs.net/musl/releases/musl-0.8.7.tar.gz
 
 [build]
 cp $K/musl.config.mak config.mak
-cp $K/wcsftime.c src/multibyte/
+
+patch -p1 < $K/musl-0.8.7-math_h_casts.patch || exit 1
+
 
 #disable building shared libs. the mere presence of libc.so messes up stuff.
 #we do not want anything in stage0 to be dynamically linked.
