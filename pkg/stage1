@@ -13,6 +13,7 @@ gmp
 kernel
 m4
 make
+man
 mpc
 mpfr
 musl

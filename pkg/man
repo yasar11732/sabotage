@@ -1,0 +1,6 @@
+[deps]
+busybox
+
+[build]
+cp $K/man.config /etc/
+
