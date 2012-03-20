@@ -14,13 +14,8 @@ fi
 STAGE="$1"
 if [ ! "$STAGE" ]
 then
-    # Try to figure out the stage intelligently
-    if [ -e /lib/ld-musl-$A.so.1 ]
-    then
-        STAGE=1
-    else
-        STAGE=0
-    fi
+    printf -- "Please specify a stage to build.\n"
+    exit 1
 fi
 printf -- "Building stage %d\n" "$STAGE"
 
