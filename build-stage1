@@ -1,0 +1,40 @@
+#!/bin/sh
+# This script is only for building a fresh stage1 from WITHIN sabotage. If you
+# are not already in sabotage, you want stage0. If you don't want a fresh
+# stage1 (in a new directory), then you just want to use butch directly to
+# install things.
+
+export H="$PWD"
+
+if [ ! -r "$H"/config ]; then
+    printf -- "couldn't read configuration file: %s\n" "$H/config"
+    printf -- "copy %s to %s and edit appropriately\n" "$K/config.stage0" "$H/config"
+    exit 1
+fi
+
+# enable verbose printing, abord on error
+set -e -x
+
+. "$H"/config
+mkdir -p "$K" "$C" "$S" "$R" "$LOGPATH"
+
+. "$H"/utils/utils
+. "$H"/utils/prepare-rootfs
+
+# NOTE
+# installation starts all over if installed.dat is not there.
+# to manually continue a stage0 build, run
+#     $S/butch.bin install stage0
+# in case the build failed or was interrupted.
+rm -f "$S"/pkg/installed.dat
+
+# update-buildroot - copy to sources
+cp -r "$H"/pkg "$S"/
+cp -r "$H"/KEEP "$S"/
+
+# build butch
+butch install butch
+
+# build stage1
+butch install stage1
+
