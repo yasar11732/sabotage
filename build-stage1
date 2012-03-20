@@ -27,11 +27,11 @@ cp -r "$H"/KEEP "$S"/
 
 rm -f "$S"/pkg/installed.dat
 
-# build butch
-butch install butch
-
 # build stage1
 butch install stage1
+
+# build butch
+butch install butch
 
 # and finalize the chroot
 "$K"/finish
