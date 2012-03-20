@@ -22,7 +22,7 @@ chmod 0600 "$R"/etc/shadow
 
 cd "$R"
 for s in etc/service/*; do
-    ln -s "$s" "var${s#etc}"
+    ln -s /"$s" "var${s#etc}"
 done
 
 cp "$K"/config.stage1 "$R"/src/config
