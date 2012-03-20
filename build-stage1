@@ -38,3 +38,6 @@ butch install butch
 # build stage1
 butch install stage1
 
+# and finalize the chroot
+"$K"/finish
+
