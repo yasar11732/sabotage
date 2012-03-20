@@ -8,6 +8,7 @@ stage0_musl
 
 [mirrors]
 https://github.com/downloads/rofl0r/butch/butch-0.0.7.tar.bz2
+http://codu.org/~rofl/butch-0.0.7.tar.bz2
 
 [build]
 CC="$R/bin/musl-gcc -static" ./build.sh
