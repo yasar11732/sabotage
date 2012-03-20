@@ -21,16 +21,11 @@ mkdir -p "$K" "$C" "$S" "$R" "$LOGPATH"
 . "$H"/utils/utils
 . "$H"/utils/prepare-rootfs
 
-# NOTE
-# installation starts all over if installed.dat is not there.
-# to manually continue a stage0 build, run
-#     $S/butch.bin install stage0
-# in case the build failed or was interrupted.
-rm -f "$S"/pkg/installed.dat
-
 # update-buildroot - copy to sources
 cp -r "$H"/pkg "$S"/
 cp -r "$H"/KEEP "$S"/
+
+rm -f "$S"/pkg/installed.dat
 
 # build butch
 butch install butch
