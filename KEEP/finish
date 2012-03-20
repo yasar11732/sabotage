@@ -8,6 +8,8 @@ fi
 
 cp -r "$H"/KEEP "$R"/src/
 cp -r "$H"/pkg "$R"/src/
+cp "$H"/build-stage1 "$R"/src/
+cp "$H"/enter-chroot "$R"/src/
 
 cp "$K"/extlinux.conf "$R"/boot/
 cp "$K"/runsvdir-start "$R"/bin/
