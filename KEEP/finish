@@ -10,8 +10,8 @@ cp -r "$H"/KEEP "$R"/src/
 cp -r "$H"/pkg "$R"/src/
 
 # For building a stage1 chroot from in sabotage
-mkdir -p "$R"/utils
-cp "$H"/utils/utils "$H"/utils/prepare-rootfs "$R"/utils/
+mkdir -p "$R"/src/utils
+cp "$H"/utils/utils "$H"/utils/prepare-rootfs "$R"/src/utils/
 cp "$H"/build-stage1 "$R"/src/
 cp "$H"/enter-chroot "$R"/src/
 
