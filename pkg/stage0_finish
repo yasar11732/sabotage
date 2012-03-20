@@ -6,5 +6,5 @@
 stage0_make
 
 [build]
-"$K"/finish
+"$H"/utils/finish
 

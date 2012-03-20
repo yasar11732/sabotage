@@ -11,8 +11,8 @@ cp -r "$H"/pkg "$R"/src/
 
 # For building a stage1 chroot from in sabotage
 mkdir -p "$R"/src/utils
-cp "$H"/utils/utils "$H"/utils/prepare-rootfs "$R"/src/utils/
-cp "$H"/build-stage1 "$R"/src/
+cp "$H"/utils/utils "$H"/utils/prepare-rootfs "$H"/utils/finish "$R"/src/utils/
+cp "$H"/build-stage "$R"/src/
 cp "$H"/enter-chroot "$R"/src/
 
 cp "$K"/extlinux.conf "$R"/boot/

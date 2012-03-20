@@ -60,6 +60,6 @@ else
     butch install butch
 
     # and finalize the chroot
-    "$K"/finish
+    "$H"/utils/finish
 fi
 
