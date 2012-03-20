@@ -6,7 +6,7 @@ download() {
     local timeout=30
     while [ $try -ne $limit ]; do
         try=$((try+1))
-		if ! wget -c "$1" --no-check-certificate ; then
+		if ! wget --no-check-certificate "$1" ; then
             printf -- "trouble downloading %s. fix your connection.\n" "$1"
             printf -- "%d tries remaining. waiting %d seconds\n" "$((limit-try))" "$timeout"
 			sleep "$timeout"
