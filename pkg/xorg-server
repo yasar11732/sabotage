@@ -4,6 +4,7 @@ pixman
 fixesproto
 damageproto
 xcmiscproto
+libxkbfile
 
 [main]
 filesize=5172054
@@ -20,7 +21,7 @@ CFLAGS="-D__gid_t=gid_t -D__uid_t=uid_t -DNOFILES_MAX=256 -D_GNU_SOURCE -I/inclu
   ./configure --prefix=/ \
     --disable-glx --disable-dri \
     --disable-xorg \
-    --enable-kdrive --enable-kdrive-evdev
-make -j$MAKE_THREADS
-make DESTDIR=$R install
+    --enable-kdrive --enable-kdrive-evdev || exit 1
+make -j$MAKE_THREADS || exit 1
+make DESTDIR=$R install || exit 1
 ln -sf Xfbdev $R/bin/X
