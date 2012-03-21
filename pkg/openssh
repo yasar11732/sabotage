@@ -27,4 +27,6 @@ make -j$MAKE_THREADS
 chown root:root /var/empty
 chmod 0755 /var/empty
 
+#key generation is disabled for packaging
+#use pkg/sshd-keys to make the keys "manually"
 make DESTDIR=$R install-nokeys
