@@ -1,5 +1,5 @@
 [deps]
-gcc4
+relocate_toolchain
 
 [main]
 filesize=557220
@@ -13,7 +13,7 @@ http://gentoo.tiscali.nl/distfiles/zlib-1.2.6.tar.gz
 http://prdownloads.sourceforge.net/libpng/zlib-1.2.6.tar.gz
 
 [build]
-./configure --prefix=/
+./configure --prefix=/ || exit 1
 
-make -j$MAKE_THREADS 
-make install
+make -j$MAKE_THREADS || exit 1
+make install || exit 1
