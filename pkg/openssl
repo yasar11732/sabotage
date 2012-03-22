@@ -15,6 +15,6 @@ sed -i '/^"linux-elf/s/-DTERMIO/-DTERMIOS/' Configure
 sed -i 's/defined(linux)/0/' crypto/ui/ui_openssl.c
 ./config --prefix=/ --openssldir=/etc/ssl --libdir=lib no-shared no-dso zlib enable-md2 -Wa,--noexecstack
 touch include/memory.h
-make -j1 depend
-make -j1 all
-make -j1 INSTALL_PREFIX=$R MANDIR=/share/man install
+make -j1 depend || exit 1
+make -j1 all || exit 1
+make -j1 INSTALL_PREFIX=$R MANDIR=/share/man install || exit 1

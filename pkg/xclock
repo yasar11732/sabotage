@@ -16,6 +16,6 @@ sha512=bbd5d0a0cf7c0e95adb13e051b5570163fed7ca6e8330136228d15aba2827afe2ebe2b763
 http://xorg.freedesktop.org/releases/individual/app/xclock-1.0.5.tar.gz
 
 [build]
-./configure --prefix=/
-make -j$MAKE_THREADS LIBS="-lfontconfig -lexpat -lfreetype -lz -lXrender -lXext -lXpm -lX11 -lxcb -lXau -lSM -lICE -lXdmcp"
-make DESTDIR=$R install
+./configure --prefix=/ || exit 1
+make -j$MAKE_THREADS LIBS="-lfontconfig -lexpat -lfreetype -lz -lXrender -lXext -lXpm -lX11 -lxcb -lXau -lSM -lICE -lXdmcp" || exit 1
+make DESTDIR=$R install || exit 1

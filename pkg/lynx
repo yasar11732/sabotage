@@ -14,6 +14,6 @@ http://lynx.isc.org/current/lynx2.8.8dev.9.tar.bz2
 sed -i 's/define ACCEPT_ALL_COOKIES FALSE/define ACCEPT_ALL_COOKIES TRUE/' userdefs.h
 
 ./configure --prefix=/ --sysconfdir=/etc --mandir=/share/man \
-  --with-ssl --disable-nls --enable-ipv6
-make
-make DESTDIR=$R install
+  --with-ssl --disable-nls --enable-ipv6  || exit 1
+make || exit 1
+make DESTDIR=$R install || exit 1

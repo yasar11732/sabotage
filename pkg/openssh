@@ -15,18 +15,18 @@ CC="gcc -include openssh-hacks.h -D_BSD_SOURCE -DMISSING_HOWMANY -DMISSING_FD_MA
   --sbindir=/bin --libexecdir=/lib/ssh --sysconfdir=/etc/ssh \
   --with-privsep-user=nobody \
   --with-md5-passwords --with-mantype=man --mandir=/share/man \
-  --disable-strip --disable-lastlog --disable-utmpx --disable-btmp
+  --disable-strip --disable-lastlog --disable-utmpx --disable-btmp || exit 1
 
 mkdir netinet
 touch netinet/in_systm.h
 
 sed -i '/USE_BTMP/d' config.h
 
-make -j$MAKE_THREADS
+make -j$MAKE_THREADS || exit 1
 
 chown root:root /var/empty
 chmod 0755 /var/empty
 
 #key generation is disabled for packaging
 #use pkg/sshd-keys to make the keys "manually"
-make DESTDIR=$R install-nokeys
+make DESTDIR=$R install-nokeys || exit 1

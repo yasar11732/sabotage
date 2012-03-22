@@ -8,5 +8,5 @@ http://ftp.gnu.org/gnu/m4/m4-1.4.16.tar.bz2
 [build]
 patch -p1 <$K/m4-hack-gnulib.patch || exit 1
 CC="$CC -static" ./configure --prefix=/ || exit 1
-make -j$MAKE_THREADS
-make DESTDIR=$R install
+make -j$MAKE_THREADS || exit 1
+make DESTDIR=$R install || exit 1

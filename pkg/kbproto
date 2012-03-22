@@ -6,6 +6,6 @@ sha512=9664d443f2c1dfbe6a0404a7d0bafdb6ada7eaab8ebb91711eaa64394a0904176d2ad9107
 ftp://ftp.x.org/pub/individual/proto/kbproto-1.0.5.tar.bz2
 
 [build]
-./configure --prefix=/
-make DESTDIR=$R -j$MAKE_THREADS install
+./configure --prefix=/ || exit 1
+make DESTDIR=$R -j$MAKE_THREADS install || exit 1
 

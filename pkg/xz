@@ -6,6 +6,6 @@ sha512=4afa838925983f8927f62c5499c61e0a4a7f2ed9e5b9074fddaf43b28317892d954e404a1
 http://tukaani.org/xz/xz-5.0.3.tar.bz2
 
 [build]
-./configure --prefix=/ --disable-nls --disable-shared
-make -j$MAKE_THREADS
-make DESTDIR=$R install
+./configure --prefix=/ --disable-nls --disable-shared || exit 1
+make -j$MAKE_THREADS || exit 1
+make DESTDIR=$R install || exit 1

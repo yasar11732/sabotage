@@ -13,7 +13,7 @@ http://hg.suckless.org/st/archive/0.1.1.tar.gz
 
 [build]
 echo "PREFIX = /" >>config.mk
-make config.h
+make config.h || exit 1
 sed -i '/FONT/s/".*"/"fixed"/' config.h
-make LIBS="-lX11 -lxcb -lXau -lXdmcp" -j$MAKE_THREADS
-make DESTDIR=$R install
+make LIBS="-lX11 -lxcb -lXau -lXdmcp" -j$MAKE_THREADS || exit 1
+make DESTDIR=$R install || exit 1

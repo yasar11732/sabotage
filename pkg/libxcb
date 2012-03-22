@@ -13,6 +13,6 @@ http://xcb.freedesktop.org/dist/libxcb-1.7.tar.bz2
 [build]
 mkdir hack
 cp /bin/cat hack/xsltproc
-PATH=hack:$PATH ./configure --prefix=/ --disable-build-docs
-make -j$MAKE_THREADS
-make DESTDIR=$R install
+PATH=hack:$PATH ./configure --prefix=/ --disable-build-docs || exit 1
+make -j$MAKE_THREADS || exit 1
+make DESTDIR=$R install || exit 1

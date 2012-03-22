@@ -23,5 +23,5 @@ $R/bin/patch -p1 < $K/gdb-amd64-debugreg.patch || exit 1
 
 CC="$CC -static -L$R/lib -I$R/include -D_GNU_SOURCE -DUT_NAMESIZE=32" ./configure --prefix=/ --disable-werror --disable-tls --with-system-zlib=yes --with-system-bfd=yes --enable-gdbserver=no || exit 1
 make -j$MAKE_THREADS || exit 1
-make DESTDIR=$R install
+make DESTDIR=$R install || exit 1
 

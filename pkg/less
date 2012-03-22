@@ -9,6 +9,6 @@ sha512=a701392b8ee6f30e08ab7a3250f1c8592dad9bd0453c758e457335309860a3f2837efa172
 http://www.greenwoodsoftware.com/less/less-444.tar.gz
 
 [build]
-./configure --prefix=/
-make -j$MAKE_THREADS
-make DESTDIR=$R install
+./configure --prefix=/ || exit 1
+make -j$MAKE_THREADS || exit 1
+make DESTDIR=$R install || exit 1

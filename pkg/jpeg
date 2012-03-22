@@ -8,9 +8,9 @@ http://prdownloads.sourceforge.net/libjpeg/jpegsrc.v6b.tar.gz
 
 [build]
 
-./configure --prefix=/ --disable-shared --disable-dso
+./configure --prefix=/ --disable-shared --disable-dso || exit 1
 
-make -j$MAKE_THREADS
-make install
-make install-lib
-make install-headers
+make -j$MAKE_THREADS || exit 1
+make install || exit 1
+make install-lib || exit 1
+make install-headers || exit 1

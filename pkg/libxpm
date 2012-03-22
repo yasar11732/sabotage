@@ -9,7 +9,7 @@ sha512=6e0f35758caef06379f92bc5ad7b5f00a921944eccf907d859405359b3a5e3c143ab8b475
 ftp://ftp.x.org/pub/individual/lib/libXpm-3.5.9.tar.bz2
 
 [build]
-sed -i 's/USE_GETTEXT="yes"/USE_GETTEXT="no"/' configure
-./configure --prefix=/
-make DESTDIR=$R -j$MAKE_THREADS install
+sed -i 's/USE_GETTEXT="yes"/USE_GETTEXT="no"/' configure || exit 1
+./configure --prefix=/ || exit 1
+make DESTDIR=$R -j$MAKE_THREADS install || exit 1
 

@@ -6,10 +6,10 @@ sha512=3a7993b452f4c8fd6feed7c414ef82af2f4f5556b6e7d67c8979bf4c0e411bbb23e399d8d
 http://downloads.sourceforge.net/psmisc/psmisc-22.13.tar.gz
 
 [build]
-./configure --prefix=/
+./configure --prefix=/ || exit 1
 echo "#include <limits.h>" >>config.h
 sed -i 's/!strcmp(__progname, "pstree.x11")/0/' src/pstree.c
 sed -i '/__progname/d' src/pstree.c
-make
-make DESTDIR=$R install
+make || exit 1
+make DESTDIR=$R install || exit 1
 rm $R/bin/pstree.x11
