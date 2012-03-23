@@ -1,55 +1,76 @@
-#!/bin/bash
+#!/bin/sh
+
+echo_bold() {
+	tput bold
+	echo $@
+	tput sgr0
+}
+
 usage() {
-    echo 'Use: buildimage.sh <img file> <directory or tarball of content> [img size]'
-    exit 1
+	echo_bold "Usage: $0 <img file> <directory or tarball of content> <img size> [--clear-builds|--copy-tarballs]"
+	echo
+	echo "--clear-builds will remove stuff in /src/build (butch 0.0.8+ build directory)"
+	echo '--copy-tarballs will copy tarballs from directory pointed to by "C" env var'
+	echo
+	echo "<img size> will be passed directly to dd, so you can use whatever value dd supports, i.e. 8G"
+	exit 1
 }
 
 die() {
-    echo "$1"
-    exit 1
+	echo "$1"
+	[ -d "$mountdir" ] && rmdir "$mountdir"
+	exit 1
 }
 
-FILE="$1"
-shift
-if [ ! "$FILE" ]
-then
-    usage
-    exit 1
-fi
+die_unloop() {
+	sync
+	losetup -d "$loopdev"
+	die "$1"
+}
 
-CONT="$1"
-shift
-if [ ! "$CONT" ]
-then
-    usage
-    exit 1
-fi
+die_unmount() {
+	umount "$mountdir" || die_unloop 'Failed to unmount /boot'
+	die_unloop "$1"
+}
 
-SIZE="$1"
-shift >& /dev/null
-if [ ! "$SIZE" ]
-then
-    SIZE="10G"
-fi
+check_opts() {
+	while [ ! -z "$1" ] ; do
+		case $1 in
+			--clear-builds)
+				clear_builds=1;;
+			--copy-tarballs)
+				copy_tarballs=1;;
+		esac
+		shift
+	done
+}
 
-MBR=
-for mbr in mbr.bin /usr/lib/syslinux/mbr.bin
-do
-    if [ -f "$mbr" ]
-    then
-        MBR="$mbr"
-        break
-    fi
-done
-if [ ! "$MBR" ]
-then
-    die 'Could not find mbr.bin'
-fi
+mountdir=
 
-# 1) make the image file
-dd if=/dev/zero of="$FILE" bs=1 count=1 seek="$SIZE" || die 'Failed to create '"$FILE"
+which extlinux 2>&1 > /dev/null || die 'extlinux must be in PATH (try installing syslinux)'
+[ "$UID" = "0" ] || die "must be root"
 
-# 2) fdisk
+imagefile="$1"
+[ -z "$imagefile" ] && usage
+
+contents="$2"
+[ -z "$contents" ] && usage
+
+imagesize="$3"
+[ -z "$imagesize" ] && usage
+
+check_opts $@
+[ "$copy_tarballs" = "1" ] && [ -z "$C" ] && die "--copy_tarballs needs C to be set. consider running 'source config'"
+
+for mbr_bin in mbr.bin /usr/lib/syslinux/mbr.bin /usr/share/syslinux/mbr.bin 
+	do [ -f "$mbr_bin" ] && break ; done
+
+[ -z "$mbr_bin" ] && die 'Could not find mbr.bin'
+
+echo_bold "1) make the image file"
+dd if=/dev/zero of="$imagefile" bs=1 count=1 seek="$imagesize" || die "Failed to create $imagefile"
+
+echo_bold "2) fdisk"
 echo 'n
 p
 1
@@ -62,51 +83,60 @@ p
 
 a
 1
-w' | /sbin/fdisk "$FILE"
+w' | fdisk "$imagefile" || die "fdisk failed"
 
-# 3) copy mbr
-dd conv=notrunc if="$MBR" of="$FILE" || die 'Failed to set up MBR'
+part1_start=`echo "512 * 2048" | bc`
+part1_size=`echo "100 * 1024 * 1024" | bc`
+part2_start=`echo "$part1_start + $part1_size" | bc`
 
-# 4) /boot
-LOOP=`losetup -f`
-MNT="/tmp/mnt.$$"
-losetup -o $(( 512 * 2048 )) --sizelimit $(( 100 * 1024 * 1024 )) "$LOOP" "$FILE" || die 'Failed to losetup for /boot'
-mkdir -p "$MNT" || die 'Failed to make '"$MNT"
-mkfs.ext3 "$LOOP" || die 'Failed to mkfs.ext3 loop for /boot'
-mount "$LOOP" "$MNT" || die 'Failed to mount loop for /boot'
-if [ -d "$CONT" ]
-then
-    cp -a "$CONT"/boot/* "$MNT"/ || die 'Failed to copy boot'
+echo_bold '3) copy mbr'
+dd conv=notrunc if="$mbr_bin" of="$imagefile" || die 'Failed to set up MBR'
+
+echo_bold '4) /boot'
+loopdev=`losetup -f`
+mountdir="/tmp/mnt.$$"
+losetup -o $part1_start --sizelimit $part1_size "$loopdev" "$imagefile" || die 'Failed to losetup for /boot'
+mkdir -p "$mountdir" || die_unloop 'Failed to make '"$mountdir"
+mkfs.ext3 "$loopdev" || die_unloop 'Failed to mkfs.ext3 loop for /boot'
+mount "$loopdev" "$mountdir" || die_unloop 'Failed to mount loop for /boot'
+
+if [ -d "$contents" ] ; then
+	cp -a "$contents"/boot/* "$mountdir"/ || die_unmount 'Failed to copy boot'
 else
-    tar -C "$MNT" -xf "$CONT" boot || die 'Failed to extract boot'
-    mv "$MNT"/boot/* "$MNT"/ || die 'Failed to move /boot content to root of boot partition'
-    rmdir "$MNT"/boot
+	tar -C "$mountdir" -xf "$contents" boot || die_unmount 'Failed to extract boot'
+	mv "$mountdir"/boot/* "$mountdir"/ || die_unmount 'Failed to move /boot content to root of boot partition'
+	rmdir "$mountdir"/boot
 fi
-perl -pe 's/sda1/sda2/g' -i "$MNT"/extlinux.conf || die 'Failed to reconfigure extlinux.conf'
-extlinux -i "$MNT"/ || die 'Failed to install extlinux'
-umount "$MNT" || die 'Failed to unmount /boot'
+sed -i 's/sda1/sda2/g' "$mountdir"/extlinux.conf || die_unmount 'Failed to reconfigure extlinux.conf'
+extlinux -i "$mountdir"/ || die_unmount 'Failed to install extlinux'
+umount "$mountdir" || die_unloop 'Failed to unmount /boot'
 sync
-losetup -d "$LOOP"
+losetup -d "$loopdev"
 
-# 5) /
-LOOP=`losetup -f`
-losetup -o $(( (512 * 2048) + (100 * 1024 * 1024) )) "$LOOP" "$FILE" || die 'Failed to losetup for /'
-mkfs.ext3 "$LOOP" || die 'Failed to mkfs.ext3 loop for /'
-mount "$LOOP" "$MNT" || die 'Failed to mount loop for /'
-if [ -d "$CONT" ]
+echo_bold ' 5) /'
+loopdev=`losetup -f`
+losetup -o $part2_start "$loopdev" "$imagefile" || die 'Failed to losetup for /'
+mkfs.ext3 "$loopdev" || die_unloop 'Failed to mkfs.ext3 loop for /'
+mount "$loopdev" "$mountdir" || die_unloop 'Failed to mount loop for /'
+
+echo_bold "copying contents, this will take a while"
+if [ -d "$contents" ]
 then
-    cp -a "$CONT"/* "$MNT"/ || die 'Failed to copy /'
+	[ "$clear_builds" = "1" ] && rm -rf "$mountdir/src/build/*"
+	[ "$copy_tarballs" = "1" ] && cp -f "$C/*" "$mountdir/src/tarballs/"
+
+	time cp -a "$contents"/* "$mountdir"/ || die_unmount 'Failed to copy /'
 else
-    tar -C "$MNT" -zxf "$CONT" || die 'Failed to extract /'
+	time tar -C "$mountdir" -zxf "$contents" || die_unmount 'Failed to extract /'
 fi
-rm -f "$MNT"/boot/*
-echo '/dev/sda1 /boot ext3 defaults 0 0' >> "$MNT"/etc/fstab || die 'Failed to extend fstab'
-umount "$MNT" || die 'Failed to unmount /'
+rm -f "$mountdir"/boot/*
+echo '/dev/sda1 /boot ext3 defaults 0 0' >> "$mountdir"/etc/fstab || die_unmount 'Failed to extend fstab'
+umount "$mountdir" || die_unloop 'Failed to unmount /'
 sync
-losetup -d "$LOOP"
+losetup -d "$loopdev"
 
 # cleanup
-rmdir "$MNT" || die 'Failed to remove '"$MNT"
+rmdir "$mountdir" || die "Failed to remove $mountdir"
 
-echo 'Done.'
+echo_bold 'Done.'
 
