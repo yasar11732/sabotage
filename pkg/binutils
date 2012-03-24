@@ -31,7 +31,7 @@ CC="$CC -static -L$R/lib -I$R/include" ./configure \
 
 echo "#define __pid_t int" >include/features.h
 make -j$MAKE_THREADS tooldir=$R || exit 1
-make DESTDIR=$TC_PATH install || exit 1
+make DESTDIR=$TC_PATH install-gas install-ld install-binutils || exit 1
 
 cd $TC_PATH/bin/
 rm -f ld
