@@ -37,4 +37,6 @@ relocate etc ..
 #-L/lib -I/include additionally to the the paths in /opt/toolchain.
 
 ln -sf musl-gcc $R/bin/gcc
+ln -s $R/bin/gcc $R/bin/cc
+
 sed -i 's,gcc=gcc,gcc=rawcc,' $R/bin/musl-gcc

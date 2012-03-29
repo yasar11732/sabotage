@@ -99,7 +99,5 @@ fi
 
 #remove gcc's stddef.h which is not compatible
 rm $TC_PATH/lib/gcc/$host_tuple/4.5.3/include/stddef.h
-#add a link to "cc"
-ln -sf gcc $TC_PATH/bin/cc
 
 [ "$A" = x86_64 ] && mv $TC_PATH/lib64/* $TC_PATH/lib/ || true
