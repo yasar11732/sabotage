@@ -1,0 +1,16 @@
+[deps]
+perl
+cpan-XML-Parser
+
+[main]
+filesize=140340
+sha512=87769800d88fe16965e59b919d1c219e928fcc4e6708f07ecba7f97c33aa5e4955635d487ef1632c94632730a9755de4776c1b2d553ae0860a038ad250153955
+
+[mirrors]
+http://ftp.gnome.org/pub/gnome/sources/intltool/0.40/intltool-0.40.6.tar.bz2
+
+[build]
+./configure --prefix="$R/" || exit 1
+make -j$MAKE_THREADS || exit 1
+make install || exit 1
+
