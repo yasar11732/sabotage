@@ -1,3 +1,7 @@
+[deps]
+intltool
+gettext
+
 [main]
 filesize=559151
 sha512=b7d3c6ede10a9f00c56328bd8e7fa01073031e29549f5d08a6a273670248a4ce6a58d994e5e234bf999080f0d7efd2d2ba970d176475dd5eb20a21ef01c6eab8
@@ -6,6 +10,9 @@ sha512=b7d3c6ede10a9f00c56328bd8e7fa01073031e29549f5d08a6a273670248a4ce6a58d994e
 ftp://ftp.x.org/pub/individual/data/xkeyboard-config-1.4.tar.bz2
 
 [build]
+
+if false ; then
+
 # fuck this, we just copy the stuff over
 mkdir -p $R/share/X11/xkb/rules
 for f in base evdev xfree98 base.lst evdev.lst xkb.dtd README base.xml evdev.xml; do
@@ -16,3 +23,10 @@ for d in compat geometry keycodes keymap semantics symbols types; do
   mv "$R/share/X11/xkb/$d/$d.dir" "$R/share/X11/xkb/$d.dir"
   rm "$R/share/X11/xkb/$d/Makefile*" || true
 done
+
+fi
+
+./configure --with-xkb_base=$R/share/X11/xkb --with-xkb-rules-symlink=xorg || exit 1
+make -j$MAKE_THREADS || exit 1
+make install || exit 1
+
