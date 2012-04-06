@@ -1,5 +1,8 @@
 [deps]
 musl
+openssl-dynamic
+ncurses-dynamic
+bzip2-dynamic
 
 [main]
 filesize=11754834
