@@ -7,4 +7,4 @@ http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz
 
 [build]
 make -j$MAKE_THREADS PREFIX=/ || exit 1
-make DESTDIR="$$butch_install_dir" PREFIX=/ install || exit 1
+make DESTDIR="$butch_install_dir" PREFIX=/ install || exit 1
