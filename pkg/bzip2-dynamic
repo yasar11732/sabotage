@@ -7,6 +7,6 @@ http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz
 
 [build]
 make -f Makefile-libbz2_so -j$MAKE_THREADS PREFIX=/ || exit 1
-cp libbz2.so.1.0.6 /lib
-ln -s libbz2.so.1.0.6 /lib/libbz2.so.1.0
-ln -s libbz2.so.1.0.6 /lib/libbz2.so
+cp libbz2.so.1.0.6 "$butch_install_dir/lib"
+ln -s libbz2.so.1.0.6 "$butch_install_dir/lib/libbz2.so.1.0"
+ln -s libbz2.so.1.0.6 "$butch_install_dir/lib/libbz2.so"
