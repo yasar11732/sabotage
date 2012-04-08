@@ -19,8 +19,7 @@ mount --bind "$C" "$R"/src/tarballs
 echo "Entering chroot..."
 chroot "$R" /bin/env -i \
     HOME=/root TERM="$TERM" PS1='\u:\w$ ' \
-    PATH=/bin:/opt/toolchain/bin \
-    /bin/sh
+    /bin/sh --login
 
 umount "$R"/src/tarballs
 umount "$R"/dev/pts
