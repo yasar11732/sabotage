@@ -6,5 +6,5 @@ sha512=00ace5438cfa0c577e5f578d8a808613187eff5217c35164ffe044fbafdfec9e98f4192c0
 http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz
 
 [build]
-make -j$MAKE_THREADS PREFIX=/ || exit 1
+make -j$MAKE_THREADS PREFIX=/ CFLAGS=-D_GNU_SOURCE || exit 1
 make DESTDIR="$butch_install_dir" PREFIX=/ install || exit 1

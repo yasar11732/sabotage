@@ -13,6 +13,6 @@ http://python.org/ftp/python/2.7.2/Python-2.7.2.tar.bz2
 
 [build]
 # we don't have lround on i386, thus -fno-builtin.
-CFLAGS="-fno-builtin" ./configure --prefix=/ || exit 1
+CFLAGS="-fno-builtin -D_GNU_SOURCE" ./configure --prefix=/ || exit 1
 make -j$MAKE_THREADS  || exit 1
 make DESTDIR="$butch_install_dir" install || exit 1

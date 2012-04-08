@@ -6,7 +6,10 @@ sha512=00ace5438cfa0c577e5f578d8a808613187eff5217c35164ffe044fbafdfec9e98f4192c0
 http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz
 
 [build]
-make -f Makefile-libbz2_so -j$MAKE_THREADS PREFIX=/ || exit 1
-cp libbz2.so.1.0.6 "$butch_install_dir/lib"
-ln -s libbz2.so.1.0.6 "$butch_install_dir/lib/libbz2.so.1.0"
-ln -s libbz2.so.1.0.6 "$butch_install_dir/lib/libbz2.so"
+make -f Makefile-libbz2_so -j$MAKE_THREADS PREFIX=/ CFLAGS="-D_GNU_SOURCE -fPIC" || exit 1
+cp -f libbz2.so.1.0.6 "$butch_install_dir/lib/" || exit 1
+cp -f bzlib.h "$butch_install_dir/include/" || exit 1
+ln -sf libbz2.so.1.0.6 "$butch_install_dir/lib/libbz2.so.1.0" || exit 1
+ln -sf libbz2.so.1.0.6 "$butch_install_dir/lib/libbz2.so" || exit 1
+
+
