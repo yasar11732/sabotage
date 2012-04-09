@@ -82,8 +82,8 @@ Next steps:
 
 Inside the chroot, you need to build stage1:
 
-  # cd /src              # absolute path required!
-  # . ./config           # required! new config has been created for stage1
+  # vi /etc/profile  # configure your environment variables
+  # . /etc/profile   # update your current environment
   # butch install stage1 # rebuild stuff, build kernel (~1h)
 
 You can now really boot the system (potentially install extlinux), or

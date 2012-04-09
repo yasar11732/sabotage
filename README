@@ -39,9 +39,9 @@ DO NOT RUN SCRIPTS YOU HAVE NOT READ.
 
 % ./build-stage 0  # build toolchain (~15min on a modern machine)
 % ./enter-chroot   # enter $R chrooted, needs root password
-% cd /src
-% vi config        # set your MAKE_THREADS, etc
-% . config
+% vi /etc/profile  # configure your environment variables
+% . /etc/profile   # update your current environment
+                   # so that your changes takes effect immediately.
 % butch install stage1
 % butch install xorg
 
